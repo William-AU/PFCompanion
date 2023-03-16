@@ -17,7 +17,7 @@ public class CharacterTest {
 
     @BeforeAll
     private static void init() {
-        character = new Character();
+        character = new Character("Test");
     }
 
     /**
