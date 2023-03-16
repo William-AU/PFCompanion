@@ -14,6 +14,7 @@ public class TitleView implements View {
         ConsoleUtils.clearConsole();
         // Small size breaks on mac for some reason?
         ASCIIUtils.print("Character Manager", ASCIIUtils.ASCIIArtSize.ART_SIZE_SMALL, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
-        System.out.println(buildProperties.getVersion());
+        // TODO: Make buildProperties actually work (most likely some IDE tomfoolery going on
+        //System.out.println(buildProperties.getVersion());
     }
 }
