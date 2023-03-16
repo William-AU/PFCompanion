@@ -2,12 +2,16 @@ import application.model.Attribute;
 import application.model.Character;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 
-@SpringBootTest
 public class CharacterTest {
     private static Character character;
 
@@ -16,11 +20,11 @@ public class CharacterTest {
         character = new Character();
     }
 
-    @Test
     /**
      *  Stupid simple test to ensure the equation used for calculating modifiers actually match the expected result for
      *  common stat values
      */
+    @Test
     public void shouldCalculateModifierCorrectly() {
         for (int i = 1; i < 21; i++) {
             int expected = switch (i) {

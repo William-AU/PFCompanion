@@ -31,6 +31,7 @@ public class Character {
 
     public int getModifier(Attribute attribute) {
         int value = attributes.get(attribute);
-        return (value - 10) / 2;
+        // Note that the commonly cited (val - 10) / 2 is actually incorrect and doesn't handle negative values correctly
+        return (value / 2) - 5;
     }
 }

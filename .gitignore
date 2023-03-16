@@ -6,8 +6,7 @@ build/
 !**/src/test/**/build/
 
 ### Tokens ###
-#!**/src/main/resources/application.properties
-#!**/src/main/resources/credentials.json
+**/secrets.txt
 
 ### STS ###
 .apt_generated
