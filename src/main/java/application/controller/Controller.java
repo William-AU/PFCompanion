@@ -1,16 +1,24 @@
 package application.controller;
 
+import application.listeners.ConsoleListener;
+import application.listeners.KeyboardListener;
 import application.utils.ConsoleUtils;
-import application.view.TitleView;
 import application.view.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Controller {
     private View currentView;
     private View defaultView;
+    private final ConsoleListener consoleListener;
+    private final KeyboardListener keyboardListener;
+
+    public Controller() {
+        // Attach a listener to this console so that we can react to console input
+        this.consoleListener = new ConsoleListener(this);
+        this.keyboardListener = new KeyboardListener(this);
+    }
 
     /**
      * Tells the controller to clear the console window and draw the current selected view

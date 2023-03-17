@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        // Needed to avoid Dumb JLine terminals
+        //classpath 'net.java.dev.jna:jna:5.13.0'
+        classpath 'org.fusesource.jansi:jansi:1.8'
+    }
+}
+
+
 plugins {
     id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -6,16 +19,17 @@ plugins {
 group 'org.example'
 version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
 
-repositories {
-    maven { url 'https://jitpack.io' }
-}
+
+
 
 springBoot {
     buildInfo()
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -37,6 +51,14 @@ dependencies {
 
     // Hamcrest
     testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    // JLine for handling console wonkyness
+    // https://github.com/jline/jline3
+    implementation 'org.jline:jline:3.23.0'
+    // Dependency for JLine (On windows)
+    //implementation 'org.jline:jline-terminal-jna:3.23.0'
+    implementation 'org.jline:jline-terminal-jansi:3.23.0'
+
 }
 
 test {

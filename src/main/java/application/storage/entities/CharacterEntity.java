@@ -1,7 +1,7 @@
 package application.storage.entities;
 
-import application.model.Attribute;
-import application.model.Character;
+import application.model.character.Attribute;
+import application.model.character.Character;
 import lombok.Data;
 
 import javax.persistence.Entity;

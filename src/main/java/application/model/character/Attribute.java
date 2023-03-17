@@ -1,4 +1,4 @@
-package application.model;
+package application.model.character;
 
 /**
  * Represents Pathfinder character attributes
