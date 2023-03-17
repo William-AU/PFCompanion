@@ -6,6 +6,8 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.NonBlockingReader;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import sun.misc.Signal;
@@ -13,17 +15,25 @@ import sun.misc.SignalHandler;
 
 import java.io.IOException;
 
-@Component
-public class KeyboardListener {
-    private final Controller controller;
+public class KeyboardListener implements NativeKeyListener {
 
-    public KeyboardListener(Controller controller) {
-        this.controller = controller;
+    /**
+     * Invoked when a key has been pressed.
+     *
+     * @param nativeEvent the native key event.
+     */
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+        System.out.println("Key pressed: " + nativeEvent.getKeyCode());
+    }
+
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
 
     }
 
-    @Scheduled(fixedDelay = 1)
-    public void listen() throws IOException {
-        // Look into https://github.com/kwhat/jnativehook
+    @Override
+    public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
+
     }
 }

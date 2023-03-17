@@ -59,6 +59,9 @@ dependencies {
     //implementation 'org.jline:jline-terminal-jna:3.23.0'
     implementation 'org.jline:jline-terminal-jansi:3.23.0'
 
+    // Attempt 2 at reading arrow keys
+    //implementation 'com.github.kwhat:jnativehook:2.2.0' // Current version is broken, use old outdated one instead
+    implementation 'com.1stleg:jnativehook:2.1.0'
 }
 
 test {

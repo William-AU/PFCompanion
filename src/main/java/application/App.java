@@ -1,6 +1,9 @@
 package application;
 
 import application.controller.Controller;
+import application.listeners.KeyboardListener;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +24,14 @@ public class App implements CommandLineRunner {
     private Controller controller;
 
     public static void main(String[] args) {
+        try {
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException e) {
+            System.err.println("There was a problem registering the native hook.");
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        GlobalScreen.addNativeKeyListener(new KeyboardListener());
         SpringApplication.run(App.class, args);
     }
 

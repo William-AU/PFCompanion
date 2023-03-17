@@ -12,12 +12,10 @@ public class Controller {
     private View currentView;
     private View defaultView;
     private final ConsoleListener consoleListener;
-    private final KeyboardListener keyboardListener;
 
     public Controller() {
         // Attach a listener to this console so that we can react to console input
         this.consoleListener = new ConsoleListener(this);
-        this.keyboardListener = new KeyboardListener(this);
     }
 
     /**
