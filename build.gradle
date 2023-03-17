@@ -62,6 +62,9 @@ dependencies {
     // Attempt 2 at reading arrow keys
     //implementation 'com.github.kwhat:jnativehook:2.2.0' // Current version is broken, use old outdated one instead
     implementation 'com.1stleg:jnativehook:2.1.0'
+
+    // Spring security for BCrypt implementation
+    implementation "org.springframework.boot:spring-boot-starter-security"
 }
 
 test {

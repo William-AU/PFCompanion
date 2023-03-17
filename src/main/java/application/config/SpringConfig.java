@@ -7,6 +7,8 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -96,5 +98,10 @@ public class SpringConfig {
     @Bean
     public View defaultView(BuildProperties buildProperties) {
         return new TitleView(buildProperties);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
