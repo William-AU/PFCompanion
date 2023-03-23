@@ -39,3 +39,6 @@ out/
 ### VS Code ###
 .vscode/
 tokens/StoredCredential
+
+### Database ###
+**.db
