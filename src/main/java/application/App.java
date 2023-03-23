@@ -43,7 +43,7 @@ public class App implements CommandLineRunner {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-        GlobalScreen.addNativeKeyListener(new KeyboardListener());
+        GlobalScreen.addNativeKeyListener(new KeyboardListener(controller));
         controller.reDraw();
     }
 

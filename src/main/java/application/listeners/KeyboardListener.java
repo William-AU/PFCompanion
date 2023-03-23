@@ -18,6 +18,12 @@ import sun.misc.SignalHandler;
 import java.io.IOException;
 
 public class KeyboardListener implements NativeKeyListener {
+    private final Controller controller;
+
+    public KeyboardListener(Controller controller) {
+        this.controller = controller;
+    }
+
 
     /**
      * Invoked when a key has been pressed.
@@ -26,7 +32,7 @@ public class KeyboardListener implements NativeKeyListener {
      */
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-        System.out.println("Found key: " + nativeEvent.getKeyCode());
+        System.out.println("Found key: " + nativeEvent.getKeyCode() + " (" + nativeEvent.getKeyChar() + ")");
     }
 
     @Override
