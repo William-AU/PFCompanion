@@ -22,20 +22,8 @@ public class ConsoleListener {
      * Method will continuously scan the console input and react to any message typed
      * Makes use of {@link org.springframework.scheduling.annotation.Scheduled} to constantly listen without hogging the thread
      */
-    //@Scheduled(fixedDelay = 1)
+    @Scheduled(fixedDelay = 1)
     public void listen() {
-        /*
-        LineReader reader = LineReaderBuilder.builder().build();
-        String line = null;
-        try {
-            line = reader.readLine();
-            System.out.println(line);
-        } catch (UserInterruptException ignored) {
-
-        } catch (EndOfFileException e) {
-            System.out.println("Lost connection to terminal");
-        }
-
-         */
+        System.out.print("");
     }
 }
