@@ -2,6 +2,8 @@ package application.config;
 
 import application.view.TitleView;
 import application.view.View;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.info.BuildProperties;
@@ -103,5 +105,10 @@ public class SpringConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Terminal terminal() throws IOException {
+        return TerminalBuilder.builder().system(true).jansi(true).build();
     }
 }
