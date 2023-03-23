@@ -35,7 +35,7 @@ public class Controller {
      */
     public void setViewAndDraw(View view) {
         currentView = view;
-        currentView.draw();
+        reDraw();
     }
 
     /**
