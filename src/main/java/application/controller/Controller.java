@@ -1,24 +1,31 @@
 package application.controller;
 
-import application.listeners.KeyboardListener;
-import application.utils.ConsoleUtils;
+import application.listeners.ListenerKey;
+import application.services.ConsoleService;
 import application.view.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class Controller {
     private View currentView;
     private View defaultView;
+    private ConsoleService consoleService;
 
-    public Controller() {
+    public Controller(ConsoleService consoleService) {
+        this.consoleService = consoleService;
+    }
+
+    public ConsoleService getConsoleService() {
+        return consoleService;
     }
 
     /**
      * Tells the controller to clear the console window and draw the current selected view
      */
     public void reDraw() {
-        ConsoleUtils.clearConsole();
+        consoleService.clearConsole();
+        if (currentView.shouldDrawTitle()) {
+            consoleService.drawTitle();
+        }
         currentView.draw();
     }
 
@@ -29,6 +36,23 @@ public class Controller {
     public void setViewAndDraw(View view) {
         currentView = view;
         currentView.draw();
+    }
+
+    /**
+     * Called by {@link application.listeners.KeyboardListener} when user presses a keyboard button, tells the view to handle the given key and then redraws the current view, unless the key pressed is {@link ListenerKey#ENTER} in which case it asks the view to confirm. If the confirm actions returns a valid {@link View} this will become the new main scene, otherwise it will redraw as usual.
+     * @param key The key pressed by the user
+     */
+    public void handleKeyEvent(ListenerKey key) {
+        if (key == ListenerKey.ENTER) {
+            View newView = currentView.confirm();
+            if (newView != null) {
+                setViewAndDraw(newView);
+                return;
+            }
+        }
+        boolean nothingChanged = !currentView.inputKey(key);
+        if (nothingChanged) return;
+        reDraw();
     }
 
     /**

@@ -19,7 +19,7 @@ public class KeyboardListener implements NativeKeyListener {
      */
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-        //System.out.println("Found key: " + nativeEvent.getKeyCode() + " (" + getKey(nativeEvent.getKeyCode()) + ")");
+        controller.handleKeyEvent(getKey(nativeEvent.getKeyCode()));
     }
 
     private ListenerKey getKey(int code) {

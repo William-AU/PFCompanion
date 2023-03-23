@@ -1,6 +1,9 @@
 package application.config;
 
-import application.view.TitleView;
+import application.controller.Controller;
+import application.services.ColorService;
+import application.services.ConsoleService;
+import application.view.MainMenuView;
 import application.view.View;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -11,6 +14,7 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -101,8 +105,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public View defaultView(BuildProperties buildProperties) {
-        return new TitleView(buildProperties);
+    public View defaultView(BuildProperties buildProperties, @Lazy Controller controller, ColorService colorService) {
+        return new MainMenuView(controller, colorService);
     }
 
     @Bean
@@ -122,4 +126,8 @@ public class SpringConfig {
         return LineReaderBuilder.builder().terminal(terminal).build();
     }
 
+    @Bean
+    public Controller controller(ConsoleService consoleService) {
+        return new Controller(consoleService);
+    }
 }
