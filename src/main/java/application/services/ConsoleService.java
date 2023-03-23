@@ -35,7 +35,7 @@ public class ConsoleService {
     }
 
     public void drawTitle() {
-        ASCIIUtils.print("Companion", ASCIIUtils.ASCIIArtSize.ART_SIZE_SMALL, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
+        ASCIIUtils.print("Companion", ASCIIUtils.ASCIIArtSize.ART_SIZE_MEDIUM, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
         System.out.println(buildProperties.getVersion());
         System.out.println();
         System.out.println();
