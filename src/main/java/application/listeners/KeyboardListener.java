@@ -1,6 +1,8 @@
 package application.listeners;
 
 import application.controller.Controller;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
@@ -24,7 +26,7 @@ public class KeyboardListener implements NativeKeyListener {
      */
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-        System.out.println("Key pressed: " + nativeEvent.getKeyCode());
+        System.out.println("Found key: " + nativeEvent.getKeyCode());
     }
 
     @Override

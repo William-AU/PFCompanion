@@ -24,14 +24,7 @@ public class App implements CommandLineRunner {
     private Controller controller;
 
     public static void main(String[] args) {
-        try {
-            GlobalScreen.registerNativeHook();
-        } catch (NativeHookException e) {
-            System.err.println("There was a problem registering the native hook.");
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        GlobalScreen.addNativeKeyListener(new KeyboardListener());
+
         SpringApplication.run(App.class, args);
     }
 
@@ -43,6 +36,14 @@ public class App implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
+        try {
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException e) {
+            System.err.println("There was a problem registering the native hook.");
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+        GlobalScreen.addNativeKeyListener(new KeyboardListener());
         controller.reDraw();
     }
 
