@@ -1,21 +1,8 @@
 package application.listeners;
 
 import application.controller.Controller;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.jline.reader.LineReader;
-import org.jline.reader.LineReaderBuilder;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
-import org.jline.utils.NonBlockingReader;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
-
-import java.io.IOException;
 
 public class KeyboardListener implements NativeKeyListener {
     private final Controller controller;
@@ -32,7 +19,19 @@ public class KeyboardListener implements NativeKeyListener {
      */
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-        System.out.println("Found key: " + nativeEvent.getKeyCode() + " (" + nativeEvent.getKeyChar() + ")");
+        //System.out.println("Found key: " + nativeEvent.getKeyCode() + " (" + getKey(nativeEvent.getKeyCode()) + ")");
+    }
+
+    private ListenerKey getKey(int code) {
+        return switch (code) {
+            case 57419 -> ListenerKey.LEFT;
+            case 57416 -> ListenerKey.UP;
+            case 57421 -> ListenerKey.RIGHT;
+            case 57424 -> ListenerKey.DOWN;
+            case 28 -> ListenerKey.ENTER;
+            case 15 -> ListenerKey.TAB;
+            default -> ListenerKey.NONE;
+        };
     }
 
     @Override

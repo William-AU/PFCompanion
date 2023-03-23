@@ -2,6 +2,8 @@ package application.config;
 
 import application.view.TitleView;
 import application.view.View;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,6 +55,7 @@ public class SpringConfig {
     }
 
     private DataSource askForDataSource() throws IOException {
+
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("No data source was found, would you like to configure one manually? (y/N)");
@@ -109,6 +112,14 @@ public class SpringConfig {
 
     @Bean
     public Terminal terminal() throws IOException {
-        return TerminalBuilder.builder().system(true).jansi(true).build();
+        Terminal terminal = TerminalBuilder.builder().system(true).jansi(true).build();
+        terminal.enterRawMode();
+        return terminal;
     }
+
+    @Bean
+    public LineReader lineReader(Terminal terminal) throws IOException {
+        return LineReaderBuilder.builder().terminal(terminal).build();
+    }
+
 }

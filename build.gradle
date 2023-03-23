@@ -65,6 +65,11 @@ dependencies {
 
     // Spring security for BCrypt implementation
     implementation "org.springframework.boot:spring-boot-starter-security"
+
+    // Needed for color highlighting
+    // https://github.com/dialex/JColor
+    implementation 'com.diogonunes:JColor:5.5.1'
+
 }
 
 test {

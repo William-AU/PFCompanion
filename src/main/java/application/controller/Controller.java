@@ -1,6 +1,5 @@
 package application.controller;
 
-import application.listeners.ConsoleListener;
 import application.listeners.KeyboardListener;
 import application.utils.ConsoleUtils;
 import application.view.View;
@@ -11,11 +10,8 @@ import org.springframework.stereotype.Component;
 public class Controller {
     private View currentView;
     private View defaultView;
-    private final ConsoleListener consoleListener;
 
     public Controller() {
-        // Attach a listener to this console so that we can react to console input
-        this.consoleListener = new ConsoleListener(this);
     }
 
     /**
