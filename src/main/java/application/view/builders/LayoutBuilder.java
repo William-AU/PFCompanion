@@ -4,6 +4,7 @@ import application.config.ColorConfig;
 import application.services.ColorService;
 import application.view.options.Option;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LayoutBuilder {
@@ -23,12 +24,12 @@ public class LayoutBuilder {
     }
 
     /**
-     * Adds a line, functions as {@link StringBuilder#append(String)}
+     * Adds a line, functions as {@link StringBuilder#append(String)} but also appends \n
      * @param line The {@link String} to add
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addLine(String line) {
-        stringBuilder.append(line);
+        stringBuilder.append(line).append("\n");
         return this;
     }
 
@@ -42,10 +43,14 @@ public class LayoutBuilder {
         for (Option option : row) {
             stringBuilder.append(prefix);
             String optionStr = colorService.formatOptionString(option.getLabel(), option.isHighlighted());
-            stringBuilder.append(optionStr);
+            stringBuilder.append(optionStr).append("\n");
             prefix = " ".repeat(layoutContext.distanceBetweenOptions);
         }
         return this;
+    }
+
+    public LayoutBuilder addOption(Option opt) {
+        return addOptionRow(new ArrayList<>() {{add(opt);}});
     }
 
 
