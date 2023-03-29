@@ -30,6 +30,7 @@ springBoot {
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
+    maven { url 'https://projectlombok.org/edge-releases' }
 }
 
 dependencies {
@@ -46,8 +47,13 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    // Current stable lombok release does not support @SneakyThrows for Java 18
+    //compileOnly 'org.projectlombok:lombok'
+    //annotationProcessor 'org.projectlombok:lombok'
+
+    // We instead use cutting edge Lombok release
+    compileOnly 'org.projectlombok:lombok:edge-SNAPSHOT'
+    annotationProcessor 'org.projectlombok:lombok:edge-SNAPSHOT'
 
     // Hamcrest
     testImplementation 'org.hamcrest:hamcrest:2.2'

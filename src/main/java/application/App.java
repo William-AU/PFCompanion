@@ -24,7 +24,6 @@ public class App implements CommandLineRunner {
     private Controller controller;
 
     public static void main(String[] args) {
-
         SpringApplication.run(App.class, args);
     }
 
