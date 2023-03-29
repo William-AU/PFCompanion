@@ -22,7 +22,14 @@ public class ColorService {
             System.out.print(toPrint);
             return;
         }
-        System.out.print(Ansi.colorize(toPrint, colorContext.text(), colorContext.background()));
+        System.out.print(Ansi.colorize(toPrint, colorContext.highlightText(), colorContext.highlightBackground()));
+    }
+
+    public String formatOptionString(String toFormat, boolean highlight) {
+        if (highlight) {
+            return Ansi.colorize(toFormat, colorContext.highlightText(), colorContext.highlightBackground());
+        }
+        return Ansi.colorize(toFormat, colorContext.baseOptionText(), colorContext.baseOptionBackground());
     }
 
     /**
@@ -35,6 +42,6 @@ public class ColorService {
             System.out.println(toPrint);
             return;
         }
-        System.out.println(Ansi.colorize(toPrint, colorContext.text(), colorContext.background()));
+        System.out.println(Ansi.colorize(toPrint, colorContext.highlightText(), colorContext.highlightBackground()));
     }
 }

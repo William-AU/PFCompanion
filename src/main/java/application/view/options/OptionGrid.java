@@ -13,6 +13,7 @@ public class OptionGrid {
         Position pos = new Position(0, 0);
         if (optionMap.containsKey(pos)) {
             currentPosition = pos;
+            optionMap.get(pos).toggleHighlight();
         } else {
             throw new IllegalArgumentException("Option map must have a zero element (Position(0, 0) could not be found)");
         }
@@ -105,7 +106,11 @@ public class OptionGrid {
      */
     public OptionGrid moveRight() {
         Position newPos = currentPosition.moveRight();
-        if (optionMap.containsKey(newPos)) currentPosition = newPos;
+        if (optionMap.containsKey(newPos)) {
+            optionMap.get(currentPosition).toggleHighlight();
+            optionMap.get(newPos).toggleHighlight();
+            currentPosition = newPos;
+        }
         return this;
     }
 
@@ -115,7 +120,11 @@ public class OptionGrid {
      */
     public OptionGrid moveLeft() {
         Position newPos = currentPosition.moveLeft();
-        if (optionMap.containsKey(newPos)) currentPosition = newPos;
+        if (optionMap.containsKey(newPos)) {
+            optionMap.get(currentPosition).toggleHighlight();
+            optionMap.get(newPos).toggleHighlight();
+            currentPosition = newPos;
+        }
         return this;
     }
 
@@ -129,9 +138,14 @@ public class OptionGrid {
         if (currentPosition.getY() == 0) return this;
         if (!optionMap.containsKey(newPos)) {
             List<Position> row = getPositionRow(currentPosition.getY() - 1);
-            currentPosition = row.get(row.size() - 1);
+            newPos = row.get(row.size() - 1);
+            optionMap.get(currentPosition).toggleHighlight();
+            optionMap.get(newPos).toggleHighlight();
+            currentPosition = newPos;
             return this;
         };
+        optionMap.get(currentPosition).toggleHighlight();
+        optionMap.get(newPos).toggleHighlight();
         currentPosition = newPos;
         return this;
     }
@@ -150,9 +164,14 @@ public class OptionGrid {
         if (currentPosition.getY() == getNumberOfRows() - 1) return this;
         if (!optionMap.containsKey(newPos)) {
             List<Position> row = getPositionRow(currentPosition.getY() + 1);
-            currentPosition = row.get(row.size() - 1);
+            newPos = row.get(row.size() - 1);
+            optionMap.get(currentPosition).toggleHighlight();
+            optionMap.get(newPos).toggleHighlight();
+            currentPosition = newPos;
             return this;
         }
+        optionMap.get(currentPosition).toggleHighlight();
+        optionMap.get(newPos).toggleHighlight();
         currentPosition = newPos;
         return this;
     }

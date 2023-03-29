@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ColorConfig {
-    public record ColorContext(Attribute text, Attribute background) {};
+    public record ColorContext(Attribute highlightText, Attribute highlightBackground,
+                               Attribute baseOptionText, Attribute baseOptionBackground) {};
 
     @Bean
     public ColorContext colorContext() {
-        return new ColorContext(Attribute.BLACK_TEXT(), Attribute.BRIGHT_WHITE_BACK());
+        return new ColorContext(Attribute.BLACK_TEXT(), Attribute.BRIGHT_WHITE_BACK(),
+                Attribute.NONE(), Attribute.NONE());
     }
 }

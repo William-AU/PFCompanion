@@ -1,0 +1,19 @@
+package application.view.strategies;
+
+import application.listeners.ListenerKey;
+import application.view.options.Option;
+import application.view.options.OptionGrid;
+
+public class SimpleOptionMovementStrategy implements OptionMovementStrategy{
+    @Override
+    public boolean handleMove(OptionGrid grid, ListenerKey key) {
+        Option currentOption = grid.getCurrentOption();
+        switch (key) {
+            case UP -> grid.moveUp();
+            case DOWN -> grid.moveDown();
+            case LEFT -> grid.moveLeft();
+            case RIGHT -> grid.moveRight();
+        }
+        return !currentOption.equals(grid.getCurrentOption());
+    }
+}

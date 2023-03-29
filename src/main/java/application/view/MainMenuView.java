@@ -3,7 +3,13 @@ package application.view;
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.ColorService;
+import application.view.options.Option;
+import application.view.options.OptionGrid;
+import application.view.options.Position;
 import org.springframework.boot.info.BuildProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainMenuView implements View {
     // Option 0 is top option
@@ -12,9 +18,17 @@ public class MainMenuView implements View {
     private Controller controller;
     private final ColorService colorService;
 
+    private final OptionGrid optionGrid;
+
     public MainMenuView(Controller controller, ColorService colorService) {
         this.controller = controller;
         this.colorService = colorService;
+
+        Map<Position, Option> optionMap = new HashMap<>() {{
+            put(new Position(0, 0), new Option("Create Character", "0"));
+            put(new Position(0, 1), new Option("Load Character", "1"));
+        }};
+        this.optionGrid = new OptionGrid(optionMap);
     }
 
     @Override

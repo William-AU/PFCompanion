@@ -60,6 +60,15 @@ public class OptionsTest {
     }
 
     @Test
+    public void shouldHighlight() {
+        Option currentOption = gridLeft.getCurrentOption();
+        assertThat(currentOption.isHighlighted(), is(true));
+        gridLeft.moveRight();
+        assertThat(currentOption.isHighlighted(), is(false));
+        assertThat(gridLeft.getCurrentOption().isHighlighted(), is(true));
+    }
+
+    @Test
     public void shouldHandleNo0Index() {
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
                 () ->
