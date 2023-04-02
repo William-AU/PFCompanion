@@ -2,8 +2,11 @@ package application.view.builders;
 
 import application.config.ColorConfig;
 import application.services.ColorService;
+import application.storage.services.ServiceContext;
+import application.storage.services.TerminalService;
 import application.view.options.Option;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +14,13 @@ public class LayoutBuilder {
     private LayoutContext layoutContext;
     private final StringBuilder stringBuilder;
     private final ColorService colorService;
+    private final TerminalService terminalService;
 
-    public LayoutBuilder(ColorService colorService) {
+    public LayoutBuilder(ServiceContext serviceContext) {
         this.layoutContext = new LayoutContext();
         this.stringBuilder = new StringBuilder();
-        this.colorService = colorService;
+        this.colorService = serviceContext.getColorService();
+        this.terminalService = serviceContext.getTerminalService();
     }
 
     public LayoutBuilder setDistanceBetweenOptions(int distance) {
@@ -66,8 +71,19 @@ public class LayoutBuilder {
     }
 
     private String center(String toCenter) {
+        int columns = terminalService.getSize().getColumns();
+        int columnsUsed = countStringColumns(toCenter);
+        int columnsWhitespace = columns - columnsUsed;
+        int leftPadding = columnsWhitespace / 2;
+        return " ".repeat(leftPadding) + toCenter;
+    }
 
-        return toCenter;
+    /**
+     * Simple method for stripping away ANSI encoding from a string, also uses {@link String#strip()} for good measure
+     */
+    private int countStringColumns(String str) {
+        String strippedString = str.replaceAll("\u001B\\[[\\d;]*[^\\d;]","");
+        return strippedString.strip().length();
     }
 
     public LayoutBuilder addOption(Option opt) {

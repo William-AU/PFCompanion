@@ -3,6 +3,7 @@ package application.view;
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.ColorService;
+import application.storage.services.ServiceContext;
 import application.view.builders.LayoutBuilder;
 import application.view.options.Option;
 import application.view.options.OptionGrid;
@@ -19,13 +20,13 @@ public class MainMenuView implements View {
     private int highlightedOption = 0;
     private int totalOptions = 2;
     private Controller controller;
-    private final ColorService colorService;
+    private final ServiceContext serviceContext;
     private final OptionMovementStrategy optionMovementStrategy;
     private final OptionGrid optionGrid;
 
-    public MainMenuView(Controller controller, ColorService colorService) {
+    public MainMenuView(Controller controller, ServiceContext serviceContext) {
         this.controller = controller;
-        this.colorService = colorService;
+        this.serviceContext = serviceContext;
         this.optionMovementStrategy = new SimpleOptionMovementStrategy();
 
         Map<Position, Option> optionMap = new HashMap<>() {{
@@ -46,8 +47,8 @@ public class MainMenuView implements View {
     @Override
     public View confirm() {
         return switch (optionGrid.getCurrentOption().getId()) {
-            case "0" -> new CreateCharacterView(controller, colorService);
-            case "1" -> new LoadCharacterView(controller, colorService);
+            case "0" -> new CreateCharacterView(controller, serviceContext.getColorService());
+            case "1" -> new LoadCharacterView(controller, serviceContext.getColorService());
             default -> null;
         };
     }
@@ -59,9 +60,10 @@ public class MainMenuView implements View {
 
 
     private void drawOptions() {
-        LayoutBuilder builder = new LayoutBuilder(colorService);
+        LayoutBuilder builder = new LayoutBuilder(serviceContext);
         builder.setDistanceBetweenOptions(10)
-                .addLine("Please select a an option")
+                .setCenter(true)
+                .addLine("Please select an option")
                 .addOptionRow(optionGrid.getOptionRow(0))
                 .addOptionRow(optionGrid.getOptionRow(1));
         System.out.println(builder.build());

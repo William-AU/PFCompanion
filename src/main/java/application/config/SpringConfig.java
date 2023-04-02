@@ -6,6 +6,7 @@ import application.services.ConsoleService;
 import application.storage.services.CharacterService;
 import application.storage.services.CredentialsService;
 import application.storage.services.ServiceContext;
+import application.storage.services.TerminalService;
 import application.view.MainMenuView;
 import application.view.View;
 import org.jline.reader.LineReader;
@@ -108,8 +109,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public View defaultView(BuildProperties buildProperties, @Lazy Controller controller, ColorService colorService) {
-        return new MainMenuView(controller, colorService);
+    public View defaultView(BuildProperties buildProperties, @Lazy Controller controller, @Lazy ServiceContext serviceContext) {
+        return new MainMenuView(controller, serviceContext);
     }
 
     @Bean
@@ -135,7 +136,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public ServiceContext serviceContext(@Lazy CharacterService characterService, @Lazy CredentialsService credentialsService, @Lazy ColorService colorService) {
-        return new ServiceContext(characterService, credentialsService, colorService);
+    public ServiceContext serviceContext(@Lazy CharacterService characterService, @Lazy CredentialsService credentialsService,
+                                         @Lazy ColorService colorService, @Lazy TerminalService terminalService) {
+        return new ServiceContext(characterService, credentialsService, colorService, terminalService);
     }
 }
