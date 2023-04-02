@@ -23,12 +23,21 @@ public class LayoutBuilder {
         return this;
     }
 
+    public LayoutBuilder setCenter(boolean value) {
+        layoutContext.center = value;
+        return this;
+    }
+
     /**
      * Adds a line, functions as {@link StringBuilder#append(String)} but also appends \n
      * @param line The {@link String} to add
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addLine(String line) {
+        if (layoutContext.center) {
+            stringBuilder.append(center(line)).append("\n");
+            return this;
+        }
         stringBuilder.append(line).append("\n");
         return this;
     }
@@ -39,14 +48,26 @@ public class LayoutBuilder {
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addOptionRow(List<Option> row) {
+        StringBuilder tempStringBuilder = new StringBuilder();
         String prefix = "";
         for (Option option : row) {
-            stringBuilder.append(prefix);
+            tempStringBuilder.append(prefix);
             String optionStr = colorService.formatOptionString(option.getLabel(), option.isHighlighted());
-            stringBuilder.append(optionStr).append("\n");
+            tempStringBuilder.append(optionStr);
             prefix = " ".repeat(layoutContext.distanceBetweenOptions);
         }
+        if (layoutContext.center) {
+            stringBuilder.append(center(tempStringBuilder.toString()));
+        } else {
+            stringBuilder.append(tempStringBuilder);
+        }
+        stringBuilder.append("\n");
         return this;
+    }
+
+    private String center(String toCenter) {
+
+        return toCenter;
     }
 
     public LayoutBuilder addOption(Option opt) {
@@ -61,13 +82,16 @@ public class LayoutBuilder {
 
     private static class LayoutContext {
         private int distanceBetweenOptions;
+        private boolean center;
 
         public LayoutContext() {
             distanceBetweenOptions = 1;
+            center = false;
         }
 
         public LayoutContext(int distanceBetweenOptions) {
             this.distanceBetweenOptions = distanceBetweenOptions;
+            center = false;
         }
     }
 }
