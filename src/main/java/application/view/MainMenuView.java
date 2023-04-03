@@ -23,8 +23,10 @@ public class MainMenuView implements View {
         this.serviceContext = serviceContext;
         this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
         Map<Position, Option> optionMap = new HashMap<>() {{
-            put(new Position(0, 0), new MutableOption("<Player>", "0",
-                    new ArrayList<>()));
+            put(new Position(0, 0), new MutableOption(new ArrayList<>() {{
+                add(new SimpleOption("<Player>", "0"));
+                add(new SimpleOption("<GM>", "1"));
+            }}));
         }};
         this.optionGrid = new OptionGrid(optionMap);
     }
