@@ -5,10 +5,10 @@ import application.view.options.Option;
 import application.view.options.OptionGrid;
 import application.view.options.Position;
 
-public class CharacterViewMomentStrategy implements OptionMovementStrategy {
+public class MoveOverOptionMovementStrategy implements OptionMovementStrategy {
     private final SimpleOptionMovementStrategy delegate;
 
-    public CharacterViewMomentStrategy() {
+    public MoveOverOptionMovementStrategy() {
         this.delegate = new SimpleOptionMovementStrategy();
     }
 

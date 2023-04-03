@@ -1,5 +1,6 @@
 package application.services;
 
+import application.common.Constants;
 import application.utils.ASCIIUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
@@ -35,7 +36,7 @@ public class ConsoleService {
     }
 
     public void drawTitle() {
-        ASCIIUtils.print("Companion", ASCIIUtils.ASCIIArtSize.ART_SIZE_MEDIUM, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
+        ASCIIUtils.print("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
         System.out.println(buildProperties.getVersion());
         System.out.println();
         System.out.println();

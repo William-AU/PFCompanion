@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContextException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import static org.hamcrest.Matchers.*;
 
 public class OptionsTest {
     private OptionGrid gridLeft;
+    private Option mutableOption;
     private Map<Position, Option> invalidPlacementMap;
 
     @BeforeEach
@@ -57,6 +59,21 @@ public class OptionsTest {
             put(new Position(1, 2), new Option("Option 7", "7"));
             put(new Position(2, 2), new Option("Option 8", "8"));
         }};
+
+
+        /*
+        Single mutable option with options:
+        OPTION1 <-> OPTION2 <-> OPTION3 <->
+         */
+        Option option1 = new Option("OPTION1", "1");
+        Option option2 = new Option("OPTION2", "2");
+        Option option3 = new Option("OPTION3", "3");
+        List<Option> options = new ArrayList<>() {{
+            add(option1);
+            add(option2);
+            add(option3);
+        }};
+        mutableOption = new Option(options);
     }
 
     @Test
@@ -177,5 +194,27 @@ public class OptionsTest {
         assertThat(row4.get(1).getId(), is("9"));
         assertThat(row4.get(2).getId(), is("10"));
         assertThat(row4.get(3).getId(), is("11"));
+    }
+
+    @Test
+    public void shouldAllowMutationForwards() {
+        assertThat(mutableOption.getId(), is("1"));
+        mutableOption.setNextOption();
+        assertThat(mutableOption.getSelectedOption().getId(), is("2"));
+        mutableOption.setNextOption();
+        assertThat(mutableOption.getSelectedOption().getId(), is("3"));
+        mutableOption.setNextOption();
+        assertThat(mutableOption.getSelectedOption().getId(), is("1"));
+    }
+
+    @Test
+    public void shouldAllowMutationBackwards() {
+        assertThat(mutableOption.getId(), is("1"));
+        mutableOption.setPreviousOption();
+        assertThat(mutableOption.getSelectedOption().getId(), is("3"));
+        mutableOption.setPreviousOption();
+        assertThat(mutableOption.getSelectedOption().getId(), is("2"));
+        mutableOption.setPreviousOption();
+        assertThat(mutableOption.getSelectedOption().getId(), is("1"));
     }
 }

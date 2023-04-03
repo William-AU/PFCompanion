@@ -1,5 +1,6 @@
 package application.view.builders;
 
+import application.common.Constants;
 import application.config.ColorConfig;
 import application.services.ColorService;
 import application.storage.services.ServiceContext;
@@ -71,7 +72,8 @@ public class LayoutBuilder {
     }
 
     private String center(String toCenter) {
-        int columns = terminalService.getSize().getColumns();
+        //int columns = terminalService.getSize().getColumns();
+        int columns = Constants.getColumns();
         int columnsUsed = countStringColumns(toCenter);
         int columnsWhitespace = columns - columnsUsed;
         int leftPadding = columnsWhitespace / 2;

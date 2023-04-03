@@ -7,7 +7,7 @@ import application.storage.services.CharacterService;
 import application.storage.services.CredentialsService;
 import application.storage.services.ServiceContext;
 import application.storage.services.TerminalService;
-import application.view.MainMenuView;
+import application.view.CharacterSelectionView;
 import application.view.View;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -110,7 +110,7 @@ public class SpringConfig {
 
     @Bean
     public View defaultView(BuildProperties buildProperties, @Lazy Controller controller, @Lazy ServiceContext serviceContext) {
-        return new MainMenuView(controller, serviceContext);
+        return new CharacterSelectionView(controller, serviceContext);
     }
 
     @Bean
@@ -120,7 +120,10 @@ public class SpringConfig {
 
     @Bean
     public Terminal terminal() throws IOException {
-        Terminal terminal = TerminalBuilder.builder().system(true).jansi(true).build();
+        Terminal terminal = TerminalBuilder.builder()
+                .system(true)
+                .jansi(true)
+                .build();
         terminal.enterRawMode();
         return terminal;
     }
