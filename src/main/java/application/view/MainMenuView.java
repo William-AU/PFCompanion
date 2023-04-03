@@ -4,12 +4,9 @@ import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
 import application.view.builders.LayoutBuilder;
-import application.view.options.Option;
-import application.view.options.OptionGrid;
-import application.view.options.Position;
+import application.view.options.*;
 import application.view.strategies.MoveOverOptionMovementStrategy;
 import application.view.strategies.OptionMovementStrategy;
-import application.view.strategies.SimpleOptionMovementStrategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +23,7 @@ public class MainMenuView implements View {
         this.serviceContext = serviceContext;
         this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
         Map<Position, Option> optionMap = new HashMap<>() {{
-            put(new Position(0, 0), new Option("<Player>", "0",
+            put(new Position(0, 0), new MutableOption("<Player>", "0",
                     new ArrayList<>()));
         }};
         this.optionGrid = new OptionGrid(optionMap);

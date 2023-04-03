@@ -2,15 +2,14 @@ package application.view;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
-import application.services.ColorService;
 import application.storage.services.ServiceContext;
 import application.view.builders.LayoutBuilder;
 import application.view.options.Option;
 import application.view.options.OptionGrid;
 import application.view.options.Position;
+import application.view.options.SimpleOption;
 import application.view.strategies.OptionMovementStrategy;
 import application.view.strategies.SimpleOptionMovementStrategy;
-import org.springframework.boot.info.BuildProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +26,8 @@ public class CharacterSelectionView implements View {
         this.optionMovementStrategy = new SimpleOptionMovementStrategy();
 
         Map<Position, Option> optionMap = new HashMap<>() {{
-            put(new Position(0, 0), new Option("Create Character", "0"));
-            put(new Position(0, 1), new Option("Load Character", "1"));
+            put(new Position(0, 0), new SimpleOption("Create Character", "0"));
+            put(new Position(0, 1), new SimpleOption("Load Character", "1"));
         }};
         this.optionGrid = new OptionGrid(optionMap);
     }

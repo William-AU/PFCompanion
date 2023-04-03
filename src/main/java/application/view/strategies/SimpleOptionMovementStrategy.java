@@ -3,6 +3,7 @@ package application.view.strategies;
 import application.listeners.ListenerKey;
 import application.view.options.Option;
 import application.view.options.OptionGrid;
+import application.view.options.SimpleOption;
 
 public class SimpleOptionMovementStrategy implements OptionMovementStrategy{
     @Override

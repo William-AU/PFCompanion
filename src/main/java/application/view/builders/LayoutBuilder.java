@@ -1,13 +1,12 @@
 package application.view.builders;
 
 import application.common.Constants;
-import application.config.ColorConfig;
 import application.services.ColorService;
 import application.storage.services.ServiceContext;
 import application.storage.services.TerminalService;
 import application.view.options.Option;
+import application.view.options.SimpleOption;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class LayoutBuilder {
 
     /**
      * Adds a line to the builder from a list of options. Each option is formatted by the {@link LayoutContext} and {@link application.config.ColorConfig.ColorContext}
-     * @param row The row of {@link Option} to be formatted
+     * @param row The row of {@link SimpleOption} to be formatted
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addOptionRow(List<Option> row) {

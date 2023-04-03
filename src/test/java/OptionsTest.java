@@ -1,10 +1,7 @@
-import application.view.options.Option;
-import application.view.options.OptionGrid;
-import application.view.options.Position;
+import application.view.options.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContextException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,17 +26,17 @@ public class OptionsTest {
         OPTION8     OPTION9     OPTION10    OPTION11
          */
         Map<Position, Option> gridMapLeftAlligned = new HashMap<>() {{
-            put(new Position(0, 0), new Option("Option 1", "1"));
-            put(new Position(1, 0), new Option("Option 2", "2"));
-            put(new Position(0, 1), new Option("Option 3", "3"));
-            put(new Position(1, 1), new Option("Option 4", "4"));
-            put(new Position(2, 1), new Option("Option 5", "5"));
-            put(new Position(0, 2), new Option("Option 6", "6"));
-            put(new Position(1, 2), new Option("Option 7", "7"));
-            put(new Position(0, 3), new Option("Option 8", "8"));
-            put(new Position(1, 3), new Option("Option 9", "9"));
-            put(new Position(2, 3), new Option("Option 10", "10"));
-            put(new Position(3, 3), new Option("Option 11", "11"));
+            put(new Position(0, 0), new SimpleOption("Option 1", "1"));
+            put(new Position(1, 0), new SimpleOption("Option 2", "2"));
+            put(new Position(0, 1), new SimpleOption("Option 3", "3"));
+            put(new Position(1, 1), new SimpleOption("Option 4", "4"));
+            put(new Position(2, 1), new SimpleOption("Option 5", "5"));
+            put(new Position(0, 2), new SimpleOption("Option 6", "6"));
+            put(new Position(1, 2), new SimpleOption("Option 7", "7"));
+            put(new Position(0, 3), new SimpleOption("Option 8", "8"));
+            put(new Position(1, 3), new SimpleOption("Option 9", "9"));
+            put(new Position(2, 3), new SimpleOption("Option 10", "10"));
+            put(new Position(3, 3), new SimpleOption("Option 11", "11"));
         }};
         gridLeft = new OptionGrid(gridMapLeftAlligned);
 
@@ -50,14 +47,14 @@ public class OptionsTest {
         OPTION6     OPTION7     OPTION8
          */
         invalidPlacementMap = new HashMap<>() {{
-            put(new Position(0, 0), new Option("Option 1", "1"));
-            put(new Position(1, 0), new Option("Option 2", "2"));
-            put(new Position(2, 0), new Option("Option 3", "3"));
-            put(new Position(0, 1), new Option("Option 4", "4"));
-            put(new Position(2, 1), new Option("Option 5", "5"));
-            put(new Position(0, 2), new Option("Option 6", "6"));
-            put(new Position(1, 2), new Option("Option 7", "7"));
-            put(new Position(2, 2), new Option("Option 8", "8"));
+            put(new Position(0, 0), new SimpleOption("Option 1", "1"));
+            put(new Position(1, 0), new SimpleOption("Option 2", "2"));
+            put(new Position(2, 0), new SimpleOption("Option 3", "3"));
+            put(new Position(0, 1), new SimpleOption("Option 4", "4"));
+            put(new Position(2, 1), new SimpleOption("Option 5", "5"));
+            put(new Position(0, 2), new SimpleOption("Option 6", "6"));
+            put(new Position(1, 2), new SimpleOption("Option 7", "7"));
+            put(new Position(2, 2), new SimpleOption("Option 8", "8"));
         }};
 
 
@@ -65,15 +62,15 @@ public class OptionsTest {
         Single mutable option with options:
         OPTION1 <-> OPTION2 <-> OPTION3 <->
          */
-        Option option1 = new Option("OPTION1", "1");
-        Option option2 = new Option("OPTION2", "2");
-        Option option3 = new Option("OPTION3", "3");
-        List<Option> options = new ArrayList<>() {{
+        SimpleOption option1 = new SimpleOption("OPTION1", "1");
+        SimpleOption option2 = new SimpleOption("OPTION2", "2");
+        SimpleOption option3 = new SimpleOption("OPTION3", "3");
+        List<SimpleOption> options = new ArrayList<>() {{
             add(option1);
             add(option2);
             add(option3);
         }};
-        mutableOption = new Option(options);
+        mutableOption = new MutableOption(options);
     }
 
     @Test
@@ -90,7 +87,7 @@ public class OptionsTest {
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
                 () ->
                 new OptionGrid(new HashMap<>() {{
-                    put(new Position(1, 1), new Option("INVALID", "NONE"));
+                    put(new Position(1, 1), new SimpleOption("INVALID", "NONE"));
                 }}));
         assertThat(thrown.getMessage(), is("Option map must have a zero element (Position(0, 0) could not be found)"));
     }
@@ -111,8 +108,8 @@ public class OptionsTest {
         OPTION2
          */
         Map<Position, Option> map = new HashMap<>() {{
-            put(new Position(0, 0), new Option("Option 1", "1"));
-            put(new Position(0, 2), new Option("Option 2", "2"));
+            put(new Position(0, 0), new SimpleOption("Option 1", "1"));
+            put(new Position(0, 2), new SimpleOption("Option 2", "2"));
         }};
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> new OptionGrid(map));
         assertThat(thrown.getMessage(), is("Invalid grid option placement"));
