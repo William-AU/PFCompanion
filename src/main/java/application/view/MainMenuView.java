@@ -9,10 +9,6 @@ import application.view.options.*;
 import application.view.strategies.MoveOverOptionMovementStrategy;
 import application.view.strategies.OptionMovementStrategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class MainMenuView implements View {
     private final Controller controller;
     private final ServiceContext serviceContext;
@@ -24,7 +20,7 @@ public class MainMenuView implements View {
         this.serviceContext = serviceContext;
         this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
         OptionGridBuilder builder = new OptionGridBuilder();
-        builder.addMutableOption(0, 0,
+        builder.addMutableOptionAtPos(0, 0,
                 new SimpleOption("<Player>", "0"),
                 new SimpleOption("<GM>", "1"));
         this.optionGrid = builder.build();

@@ -13,7 +13,9 @@ public class OptionGrid {
         Position pos = new Position(0, 0);
         if (optionMap.containsKey(pos)) {
             currentPosition = pos;
-            optionMap.get(pos).toggleHighlight();
+            if (!optionMap.get(pos).isHighlighted()) {
+                optionMap.get(pos).toggleHighlight();
+            }
         } else {
             throw new IllegalArgumentException("Option map must have a zero element (Position(0, 0) could not be found)");
         }
@@ -174,5 +176,23 @@ public class OptionGrid {
         optionMap.get(newPos).toggleHighlight();
         currentPosition = newPos;
         return this;
+    }
+
+    public Map<Position, Option> DEBUG() {
+        return optionMap;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OptionGrid that = (OptionGrid) o;
+        //return optionMap.keySet().equals(that.optionMap.keySet()) && currentPosition.equals(that.currentPosition);
+        return optionMap.equals(that.optionMap) && currentPosition.equals(that.currentPosition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(optionMap, currentPosition);
     }
 }
