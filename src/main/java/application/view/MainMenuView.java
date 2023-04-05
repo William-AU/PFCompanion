@@ -53,6 +53,6 @@ public class MainMenuView implements View {
 
     @Override
     public boolean inputKey(ListenerKey key) {
-        return false;
+        return optionMovementStrategy.handleMove(optionGrid, key);
     }
 }

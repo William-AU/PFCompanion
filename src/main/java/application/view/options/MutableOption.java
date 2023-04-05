@@ -82,12 +82,18 @@ public class MutableOption implements Option {
 
     @Override
     public String getLabel() {
-        return this.label;
+        if (this.allOptions == null) {
+            return this.label;
+        }
+        return getSelectedOption().getLabel();
     }
 
     @Override
     public String getId() {
-        return this.id;
+        if (this.allOptions == null) {
+            return this.id;
+        }
+        return getSelectedOption().getId();
     }
 
     @Override
