@@ -4,6 +4,7 @@ import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
 import application.view.builders.LayoutBuilder;
+import application.view.builders.OptionGridBuilder;
 import application.view.options.*;
 import application.view.strategies.MoveOverOptionMovementStrategy;
 import application.view.strategies.OptionMovementStrategy;
@@ -22,13 +23,11 @@ public class MainMenuView implements View {
         this.controller = controller;
         this.serviceContext = serviceContext;
         this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
-        Map<Position, Option> optionMap = new HashMap<>() {{
-            put(new Position(0, 0), new MutableOption(new ArrayList<>() {{
-                add(new SimpleOption("<Player>", "0"));
-                add(new SimpleOption("<GM>", "1"));
-            }}));
-        }};
-        this.optionGrid = new OptionGrid(optionMap);
+        OptionGridBuilder builder = new OptionGridBuilder();
+        builder.addMutableOption(0, 0,
+                new SimpleOption("<Player>", "0"),
+                new SimpleOption("<GM>", "1"));
+        this.optionGrid = builder.build();
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MainMenuView implements View {
         // ID 1 = GM
         return switch (optionGrid.getCurrentOption().getId()) {
             case "0" -> new CharacterSelectionView(controller, serviceContext);
-            case "1" -> new GMView(controller, serviceContext);
+            case "1" -> new GMSelectionView(controller, serviceContext);
             default -> null;
         };
     }

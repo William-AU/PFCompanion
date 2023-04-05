@@ -3,14 +3,25 @@ package application.view;
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
+import application.view.builders.OptionGridBuilder;
+import application.view.options.Option;
+import application.view.options.OptionGrid;
+import application.view.options.Position;
 
-public class GMView implements View {
+import java.util.HashMap;
+import java.util.Map;
+
+public class GMSelectionView implements View {
     private final Controller controller;
     private final ServiceContext serviceContext;
+    private final OptionGrid optionGrid;
 
-    public GMView(Controller controller, ServiceContext serviceContext) {
+    public GMSelectionView(Controller controller, ServiceContext serviceContext) {
         this.controller = controller;
         this.serviceContext = serviceContext;
+        OptionGridBuilder builder = new OptionGridBuilder();
+
+        this.optionGrid = builder.build();
     }
 
     @Override

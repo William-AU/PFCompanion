@@ -10,7 +10,7 @@ public class MutableOption implements Option {
     private final String id;
     private boolean canMoveOver;
     private boolean highlighted;
-    private CircularDoublyLinkedList<SimpleOption> allOptions;
+    private final CircularDoublyLinkedList<SimpleOption> allOptions;
 
     /**
      * An alternative constructor allowing an option to mutate to another option using a list of options
