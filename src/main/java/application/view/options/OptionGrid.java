@@ -19,9 +19,7 @@ public class OptionGrid {
         } else {
             throw new IllegalArgumentException("Option map must have a zero element (Position(0, 0) could not be found)");
         }
-        if (invalid()) {
-            throw new IllegalArgumentException("Invalid grid option placement");
-        }
+        validate();
     }
 
     @SneakyThrows // SneakyThrows is redundant because IllegalArgumentException is sneaky by default, but this way we can use at normal while also showing that we actually intend to throw an exception... it's a bit hacky
@@ -41,20 +39,22 @@ public class OptionGrid {
             Collections.reverse(row);
         }
         int max = Collections.max(knownRows);
-        if (max != knownRows.size() - 1) throw new IllegalArgumentException("GAP");
+        if (max != knownRows.size() - 1) throw new IllegalArgumentException("ROW GAP");
         return new ArrayList<>(rowMap.values());
     }
 
-    private boolean invalid() {
+    private void validate() {
         List<List<Position>> rows;
         try {
             // Assignment to allRows will throw exception if there is a gap between the rows
             rows = getAllRows();
-        } catch (IllegalArgumentException ignored) {
-            return true;
+        } catch (IllegalArgumentException e) {
+            throw e;
         }
         // Check that there is no gap in the same row
         for (List<Position> row : rows) {
+            // For some reason it is possible for the layout builder to mess up the position order, this ensures we can trust the order
+            Collections.sort(row);
             for (int i = 0; i < row.size(); i++) {
                 // Extract the first position
                 Position pos = row.remove(0);
@@ -63,11 +63,10 @@ public class OptionGrid {
                 // If we are not empty, then the next element must be next to the current one
                 Position newPos = row.get(0);
                 if (!pos.moveRight().equals(newPos)) {
-                    return true;
+                    throw new IllegalArgumentException("COLUMN GAP");
                 }
             }
         }
-        return false;
     }
 
     private List<Position> getPositionRow(int row) {
@@ -113,6 +112,23 @@ public class OptionGrid {
             optionMap.get(newPos).toggleHighlight();
             currentPosition = newPos;
         }
+        return this;
+    }
+
+    /**
+     * Handles a tab event, moves to the next available right option in the row, if current option is the right most, loop back and select left most option
+     * @return The updated instance of the {@link OptionGrid}
+     */
+    public OptionGrid tab() {
+        Position rightPos = currentPosition.moveRight();
+        if (optionMap.containsKey(rightPos)) {
+            return moveRight();
+        }
+        Position leftMost = new Position(0, currentPosition.getY());
+        if (currentPosition.equals(leftMost)) return this;
+        optionMap.get(currentPosition).toggleHighlight();
+        optionMap.get(leftMost).toggleHighlight();
+        currentPosition = leftMost;
         return this;
     }
 

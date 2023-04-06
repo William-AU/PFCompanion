@@ -5,6 +5,7 @@ import application.listeners.ListenerKey;
 import application.services.ColorService;
 import application.services.ConsoleService;
 import application.storage.services.ServiceContext;
+import application.view.MainMenuView;
 import application.view.View;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
@@ -38,20 +39,30 @@ public class CreateCharacterView implements View {
 
     private OptionGrid createOptionGrid() {
         OptionGridBuilder builder = new OptionGridBuilder();
-        builder.addOptionsToNewRow(new SimpleOption("Enter name", "0"));
+        builder.addOptionsToNewRow(
+                new SimpleOption("Back", "0"),
+                new SimpleOption("Enter name", "1"),
+                new SimpleOption("Next", "2"));
 
 
-        return builder.build();
+        OptionGrid res = builder.build();
+        // Ensure middle button is the initial highlighted option
+        res.moveRight();
+        return res;
     }
 
     @Override
     public void draw() {
         LayoutBuilder layoutBuilder = new LayoutBuilder(serviceContext);
         layoutBuilder.setCenter(true)
+                .setDistanceBetweenOptions(6)
                 .addOptionRow(optionGrid.getOptionRow(0));
         if (isEnteringName) {
             layoutBuilder.addLine("[" + currentNameInput + "]");
+        } else {
+            layoutBuilder.addLine(currentNameInput);
         }
+        System.out.println(layoutBuilder.build());
     }
 
     /**
@@ -60,32 +71,51 @@ public class CreateCharacterView implements View {
      */
     @Override
     public View confirm() {
-        if (isEnteringName) {
-            // Handle name
-            isEnteringName = false;
-            acceptChars = false;
-            optionMovementStrategy = new MoveOverOptionMovementStrategy();
-        }
         switch (optionGrid.getCurrentOption().getId()) {
             case "0" -> {
+                return new CharacterSelectionView(controller, serviceContext);
+            }
+            case "1" -> {
                 // Enter name option
-                optionMovementStrategy = new NullMovementStrategy();
-                isEnteringName = true;
-                acceptChars = true;
+                toggleTyping();
                 return this;
+            }
+            case "2" -> {
+                // Send user to the next screen with created character
+                // TODO: Implement
+                return null;
             }
         };
         return null;
     }
 
+    /**
+     * Updates the view with the given char input, return true if anything changed
+     * @param ch The char pressed
+     * @return True if the char changed anything about the view state, false otherwise. Defaults to false as to be consistent with {@link #shouldAcceptLetters()}
+     */
     @Override
     public boolean inputChar(char ch) {
-        return View.super.inputChar(ch);
+        if (!isEnteringName) return false;
+        currentNameInput += ch;
+        return true;
     }
 
     @Override
     public boolean shouldAcceptLetters() {
         return acceptChars;
+    }
+
+    private void toggleTyping() {
+        if (isEnteringName) {
+            isEnteringName = false;
+            acceptChars = false;
+            optionMovementStrategy = new MoveOverOptionMovementStrategy();
+        } else {
+            isEnteringName = true;
+            acceptChars = true;
+            optionMovementStrategy = new NullMovementStrategy();
+        }
     }
 
     /**
@@ -96,6 +126,30 @@ public class CreateCharacterView implements View {
      */
     @Override
     public boolean inputKey(ListenerKey key) {
-        return false;
+        // Special case for backspace
+        switch (key) {
+            case BACKSPACE -> {
+                if (currentNameInput.isBlank()) return false;
+                currentNameInput = currentNameInput.substring(0, currentNameInput.length() - 1);
+                return true;
+            }
+            case ESCAPE -> {
+                if (isEnteringName) {
+                    toggleTyping();
+                    return true;
+                }
+                return false;
+            }
+            case TAB -> {
+                if (isEnteringName) {
+                    toggleTyping();
+                }
+                return optionMovementStrategy.handleMove(optionGrid, key);
+
+            }
+            default -> {
+                return optionMovementStrategy.handleMove(optionGrid, key);
+            }
+        }
     }
 }

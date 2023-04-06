@@ -7,6 +7,7 @@ public class ISO_DAN implements KeyboardLayout {
 
     private char getChar(int code) {
         return switch (code) {
+            case 57 -> ' ';
             // Numbers
             case 2 -> '1';
             case 3 -> '2';
@@ -132,6 +133,8 @@ public class ISO_DAN implements KeyboardLayout {
             case 57424 -> ListenerKey.DOWN;
             case 28 -> ListenerKey.ENTER;
             case 15 -> ListenerKey.TAB;
+            case 14 -> ListenerKey.BACKSPACE;
+            case 1 -> ListenerKey.ESCAPE;
             default -> ListenerKey.NONE;
         };
     }

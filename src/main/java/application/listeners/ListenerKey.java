@@ -7,5 +7,7 @@ public enum ListenerKey {
     RIGHT,
     NONE,
     ENTER,
-    TAB
+    TAB,
+    BACKSPACE,
+    ESCAPE
 }

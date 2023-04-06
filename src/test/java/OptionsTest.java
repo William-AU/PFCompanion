@@ -74,6 +74,19 @@ public class OptionsTest {
     }
 
     @Test
+    public void shouldHandleTab() {
+        Option currentOption = gridLeft.getCurrentOption();
+        assertThat(currentOption.isHighlighted(), is(true));
+        gridLeft.tab();
+        assertThat(currentOption.isHighlighted(), is(false));
+        assertThat(gridLeft.getCurrentOption().getId(), is("2"));
+        assertThat(gridLeft.getCurrentOption().isHighlighted(), is(true));
+        gridLeft.tab();
+        assertThat(gridLeft.getCurrentOption().getId(), is("1"));
+        assertThat(gridLeft.getCurrentOption().isHighlighted(), is(true));
+    }
+
+    @Test
     public void shouldHighlight() {
         Option currentOption = gridLeft.getCurrentOption();
         assertThat(currentOption.isHighlighted(), is(true));
@@ -97,7 +110,7 @@ public class OptionsTest {
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
                 () ->
                 new OptionGrid(invalidPlacementMap));
-        assertThat(thrown.getMessage(), is("Invalid grid option placement"));
+        assertThat(thrown.getMessage(), is("COLUMN GAP"));
     }
 
     @Test
@@ -112,7 +125,7 @@ public class OptionsTest {
             put(new Position(0, 2), new SimpleOption("Option 2", "2"));
         }};
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> new OptionGrid(map));
-        assertThat(thrown.getMessage(), is("Invalid grid option placement"));
+        assertThat(thrown.getMessage(), is("ROW GAP"));
     }
 
     @Test

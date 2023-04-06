@@ -14,6 +14,7 @@ public class SimpleOptionMovementStrategy implements OptionMovementStrategy{
             case DOWN -> grid.moveDown();
             case LEFT -> grid.moveLeft();
             case RIGHT -> grid.moveRight();
+            case TAB -> grid.tab();
         }
         return !currentOption.equals(grid.getCurrentOption());
     }

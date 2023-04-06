@@ -64,14 +64,14 @@ public class OptionGridBuilder {
      * @return The updated instance of the {@link OptionGridBuilder}
      */
     public OptionGridBuilder addOptionsToNewRow(Option... options) {
-        int currentLargestRow;
+        int rowToAddOptions;
         if (optionMap.isEmpty()) {
-            currentLargestRow = -1;
+            rowToAddOptions = 0;
         } else {
-            currentLargestRow = getLargestRow();
+            rowToAddOptions = getLargestRow() + 1;
         }
         for (int i = 0; i < options.length; i++) {
-            optionMap.put(new Position(i, currentLargestRow + 1), options[i]);
+            optionMap.put(new Position(i, rowToAddOptions), options[i]);
         }
         return this;
     }

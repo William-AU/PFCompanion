@@ -21,6 +21,7 @@ public class MoveOverOptionMovementStrategy implements OptionMovementStrategy {
     @Override
     public boolean handleMove(OptionGrid grid, ListenerKey key) {
         Option currentOption = grid.getCurrentOption();
+        if (key == ListenerKey.TAB) return delegate.handleMove(grid, key);
         if (!currentOption.canMoveOver()) {
             return handleMutableOption(currentOption, key);
         };
