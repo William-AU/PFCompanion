@@ -1,16 +1,17 @@
-package application.view;
+package application.view.characterViews;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.ColorService;
 import application.services.ConsoleService;
+import application.view.View;
 
-public class LoadCharacterView implements View {
+public class CreateCharacterView implements View {
     private final Controller controller;
     private final ColorService colorService;
     private final ConsoleService consoleService;
 
-    public LoadCharacterView(Controller controller, ColorService colorService) {
+    public CreateCharacterView(Controller controller, ColorService colorService) {
         this.controller = controller;
         this.colorService = colorService;
         consoleService = controller.getConsoleService();

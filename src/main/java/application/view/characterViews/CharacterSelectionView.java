@@ -1,8 +1,9 @@
-package application.view;
+package application.view.characterViews;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
+import application.view.View;
 import application.view.builders.LayoutBuilder;
 import application.view.options.Option;
 import application.view.options.OptionGrid;

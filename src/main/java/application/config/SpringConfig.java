@@ -1,13 +1,14 @@
 package application.config;
 
 import application.controller.Controller;
+import application.listeners.keyboardLayouts.ISO_DAN;
+import application.listeners.keyboardLayouts.KeyboardLayout;
 import application.services.ColorService;
 import application.services.ConsoleService;
 import application.storage.services.CharacterService;
 import application.storage.services.CredentialsService;
 import application.storage.services.ServiceContext;
 import application.storage.services.TerminalService;
-import application.view.CharacterSelectionView;
 import application.view.MainMenuView;
 import application.view.View;
 import org.jline.reader.LineReader;
@@ -143,5 +144,10 @@ public class SpringConfig {
     public ServiceContext serviceContext(@Lazy CharacterService characterService, @Lazy CredentialsService credentialsService,
                                          @Lazy ColorService colorService, @Lazy TerminalService terminalService) {
         return new ServiceContext(characterService, credentialsService, colorService, terminalService);
+    }
+
+    @Bean
+    public KeyboardLayout keyboardLayout() {
+        return new ISO_DAN();
     }
 }

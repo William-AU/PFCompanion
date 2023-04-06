@@ -55,6 +55,10 @@ public class Controller {
         reDraw();
     }
 
+    public void handleCharEvent(char event) {
+
+    }
+
     /**
      * Initial view to display on application startup as specified in SpringConfig.
      * The view doubles as the default view, the "root" of all possible sub views so to speak

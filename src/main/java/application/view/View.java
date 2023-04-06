@@ -20,9 +20,17 @@ public interface View {
 
     /**
      * Tells the controller if this view requires the basic title be drawn. Usually only disabled if the view wants to draw a scene specific title instead
-     * @return True if the controller should draw the main title, false otherwise
+     * @return True if the controller should draw the main title, false otherwise. Defaults to true.
      */
     default boolean shouldDrawTitle() {
         return true;
+    }
+
+    /**
+     * Tells the controller if this view is accepting letter input, usually for text input
+     * @return True if the current view is accepting letters, false otherwise. Defaults to false.
+     */
+    default boolean shouldAcceptLetters() {
+        return false;
     }
 }

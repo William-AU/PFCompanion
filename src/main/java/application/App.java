@@ -2,6 +2,7 @@ package application;
 
 import application.controller.Controller;
 import application.listeners.KeyboardListener;
+import application.listeners.keyboardLayouts.KeyboardLayout;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public class App implements CommandLineRunner {
     private Controller controller;
+    private KeyboardLayout keyboardLayout;
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
@@ -42,12 +44,17 @@ public class App implements CommandLineRunner {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-        GlobalScreen.addNativeKeyListener(new KeyboardListener(controller));
+        GlobalScreen.addNativeKeyListener(new KeyboardListener(controller, keyboardLayout));
         controller.reDraw();
     }
 
     @Autowired
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+
+    @Autowired
+    public void setKeyboardLayout(KeyboardLayout layout) {
+        this.keyboardLayout = layout;
     }
 }
