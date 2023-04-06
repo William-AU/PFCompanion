@@ -56,7 +56,10 @@ public class Controller {
     }
 
     public void handleCharEvent(char event) {
-
+        if (!currentView.shouldAcceptLetters()) return;
+        boolean nothingChanged = !currentView.inputChar(event);
+        if (nothingChanged) return;
+        reDraw();
     }
 
     /**

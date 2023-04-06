@@ -19,6 +19,15 @@ public interface View {
     boolean inputKey(ListenerKey key);
 
     /**
+     * Updates the view with the given char input, return true if anything changed
+     * @param ch The char pressed
+     * @return True if the char changed anything about the view state, false otherwise. Defaults to false as to be consistent with {@link #shouldAcceptLetters()}
+     */
+    default boolean inputChar(char ch) {
+        return false;
+    };
+
+    /**
      * Tells the controller if this view requires the basic title be drawn. Usually only disabled if the view wants to draw a scene specific title instead
      * @return True if the controller should draw the main title, false otherwise. Defaults to true.
      */

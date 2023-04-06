@@ -4,16 +4,17 @@ import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.ColorService;
 import application.services.ConsoleService;
+import application.storage.services.ServiceContext;
 import application.view.View;
 
 public class LoadCharacterView implements View {
     private final Controller controller;
-    private final ColorService colorService;
+    private final ServiceContext serviceContext;
     private final ConsoleService consoleService;
 
-    public LoadCharacterView(Controller controller, ColorService colorService) {
+    public LoadCharacterView(Controller controller, ServiceContext serviceContext) {
         this.controller = controller;
-        this.colorService = colorService;
+        this.serviceContext = serviceContext;
         consoleService = controller.getConsoleService();
     }
 

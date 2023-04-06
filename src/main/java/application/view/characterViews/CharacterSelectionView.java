@@ -44,8 +44,8 @@ public class CharacterSelectionView implements View {
     @Override
     public View confirm() {
         return switch (optionGrid.getCurrentOption().getId()) {
-            case "0" -> new CreateCharacterView(controller, serviceContext.getColorService());
-            case "1" -> new LoadCharacterView(controller, serviceContext.getColorService());
+            case "0" -> new CreateCharacterView(controller, serviceContext);
+            case "1" -> new LoadCharacterView(controller, serviceContext);
             default -> null;
         };
     }
