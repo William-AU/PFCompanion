@@ -4,8 +4,6 @@ A multipurpose console based management system for various Tabletop Roleplaying 
 ## Description ##
 PFCompanion primarily focuses on tracking various resources for players and GMs of [Pathfinder](https://paizo.com/pathfinder), although support for other TTRPGs can easily be implemented using the tools included in this repository.
 
-Progress and current state can be 
-
 ## Dependencies ##
 * [JNativeHook](https://github.com/kwhat/jnativehook) is used to read keyboard input, however, there is a [known issue](https://github.com/kwhat/jnativehook/issues/428) with newer versions of JNativeHook. Until this issue is fixed, this project uses version 2.1.0, which is incompatible with Mac Silicon.
 * On MacOS, the terminal attached to the JVM requires accessibility settings for JNativeHook to work.
