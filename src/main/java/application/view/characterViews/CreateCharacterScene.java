@@ -2,11 +2,9 @@ package application.view.characterViews;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
-import application.services.ColorService;
 import application.services.ConsoleService;
 import application.storage.services.ServiceContext;
-import application.view.MainMenuView;
-import application.view.View;
+import application.view.Scene;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
 import application.view.options.OptionGrid;
@@ -15,21 +13,16 @@ import application.view.strategies.MoveOverOptionMovementStrategy;
 import application.view.strategies.NullMovementStrategy;
 import application.view.strategies.OptionMovementStrategy;
 
-public class CreateCharacterView implements View {
-    private final Controller controller;
-    private final ServiceContext serviceContext;
-    private final ConsoleService consoleService;
+public class CreateCharacterScene implements Scene {
+    private ServiceContext serviceContext;
     private OptionMovementStrategy optionMovementStrategy;
     private final OptionGrid optionGrid;
-    // View specific state
+    // Scene specific state
     private boolean acceptChars;
     private String currentNameInput;
     private boolean isEnteringName;
 
-    public CreateCharacterView(Controller controller, ServiceContext serviceContext) {
-        this.controller = controller;
-        this.serviceContext = serviceContext;
-        this.consoleService = controller.getConsoleService();
+    public CreateCharacterScene() {
         this.optionGrid = createOptionGrid();
         this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
         this.currentNameInput = "";
@@ -67,13 +60,13 @@ public class CreateCharacterView implements View {
 
     /**
      * Indicated that the user confirmed an option, usually by pressing enter
-     * @return Returns a new {@link View} if the action requires a scene change, otherwise returns null
+     * @return Returns a new {@link Scene} if the action requires a scene change, otherwise returns null
      */
     @Override
-    public View confirm() {
+    public Scene confirm() {
         switch (optionGrid.getCurrentOption().getId()) {
             case "0" -> {
-                return new CharacterSelectionView(controller, serviceContext);
+                return new CharacterSelectionScene();
             }
             case "1" -> {
                 // Enter name option
@@ -151,5 +144,10 @@ public class CreateCharacterView implements View {
                 return optionMovementStrategy.handleMove(optionGrid, key);
             }
         }
+    }
+
+    @Override
+    public void setServiceContext(ServiceContext serviceContext) {
+        this.serviceContext = serviceContext;
     }
 }

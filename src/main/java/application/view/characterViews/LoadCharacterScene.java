@@ -2,20 +2,13 @@ package application.view.characterViews;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
-import application.services.ColorService;
 import application.services.ConsoleService;
 import application.storage.services.ServiceContext;
-import application.view.View;
+import application.view.Scene;
 
-public class LoadCharacterView implements View {
-    private final Controller controller;
-    private final ServiceContext serviceContext;
-    private final ConsoleService consoleService;
+public class LoadCharacterScene implements Scene {
 
-    public LoadCharacterView(Controller controller, ServiceContext serviceContext) {
-        this.controller = controller;
-        this.serviceContext = serviceContext;
-        consoleService = controller.getConsoleService();
+    public LoadCharacterScene() {
     }
 
     @Override
@@ -27,7 +20,7 @@ public class LoadCharacterView implements View {
      * Indicated that the user confirmed an option, usually by pressing enter
      */
     @Override
-    public View confirm() {
+    public Scene confirm() {
         return null;
     }
 

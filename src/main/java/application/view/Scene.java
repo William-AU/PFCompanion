@@ -1,15 +1,17 @@
 package application.view;
 
+import application.controller.Controller;
 import application.listeners.ListenerKey;
+import application.storage.services.ServiceContext;
 
-public interface View {
+public interface Scene {
     void draw();
 
     /**
      * Indicates that the user confirmed an option, usually by pressing enter
-     * @return Returns a new {@link View} if the action requires a scene change, otherwise returns null
+     * @return Returns a new {@link Scene} if the action requires a scene change, otherwise returns null
      */
-    View confirm();
+    Scene confirm();
 
     /**
      * Updates the view with the given key input, return true if anything changed
@@ -42,4 +44,13 @@ public interface View {
     default boolean shouldAcceptLetters() {
         return false;
     }
+
+    default void setController(Controller controller) {
+
+    };
+
+    default void setServiceContext(ServiceContext serviceContext) {
+
+    }
+
 }

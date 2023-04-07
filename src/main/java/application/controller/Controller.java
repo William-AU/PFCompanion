@@ -2,16 +2,19 @@ package application.controller;
 
 import application.listeners.ListenerKey;
 import application.services.ConsoleService;
-import application.view.View;
+import application.storage.services.ServiceContext;
+import application.view.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Controller {
-    private View currentView;
-    private View defaultView;
-    private ConsoleService consoleService;
+    private Scene currentScene;
+    private Scene defaultScene;
+    private final ConsoleService consoleService;
+    private final ServiceContext serviceContext;
 
-    public Controller(ConsoleService consoleService) {
-        this.consoleService = consoleService;
+    public Controller(ServiceContext serviceContext) {
+        this.consoleService = serviceContext.getConsoleService();
+        this.serviceContext = serviceContext;
     }
 
     public ConsoleService getConsoleService() {
@@ -23,54 +26,56 @@ public class Controller {
      */
     public void reDraw() {
         consoleService.clearConsole();
-        if (currentView.shouldDrawTitle()) {
+        if (currentScene.shouldDrawTitle()) {
             consoleService.drawTitle();
         }
-        currentView.draw();
+        currentScene.draw();
     }
 
     /**
-     * Selects a view to display and then calls reDraw()
-     * @param view The view to draw
+     * Selects a scene to display and then calls reDraw()
+     * @param scene The scene to draw
      */
-    public void setViewAndDraw(View view) {
-        currentView = view;
+    public void setViewAndDraw(Scene scene) {
+        currentScene = scene;
+        currentScene.setController(this);
+        currentScene.setServiceContext(serviceContext);
         reDraw();
     }
 
     /**
-     * Called by {@link application.listeners.KeyboardListener} when user presses a keyboard button, tells the view to handle the given key and then redraws the current view, unless the key pressed is {@link ListenerKey#ENTER} in which case it asks the view to confirm. If the confirm actions returns a valid {@link View} this will become the new main scene, otherwise it will redraw as usual.
+     * Called by {@link application.listeners.KeyboardListener} when user presses a keyboard button, tells the view to handle the given key and then redraws the current view, unless the key pressed is {@link ListenerKey#ENTER} in which case it asks the view to confirm. If the confirm actions returns a valid {@link Scene} this will become the new main scene, otherwise it will redraw as usual.
      * @param key The key pressed by the user
      */
     public void handleKeyEvent(ListenerKey key) {
         if (key == ListenerKey.ENTER) {
-            View newView = currentView.confirm();
-            if (newView != null) {
-                setViewAndDraw(newView);
+            Scene newScene = currentScene.confirm();
+            if (newScene != null) {
+                setViewAndDraw(newScene);
                 return;
             }
         }
-        boolean nothingChanged = !currentView.inputKey(key);
+        boolean nothingChanged = !currentScene.inputKey(key);
         if (nothingChanged) return;
         reDraw();
     }
 
     public void handleCharEvent(char event) {
-        if (!currentView.shouldAcceptLetters()) return;
-        boolean nothingChanged = !currentView.inputChar(event);
+        if (!currentScene.shouldAcceptLetters()) return;
+        boolean nothingChanged = !currentScene.inputChar(event);
         if (nothingChanged) return;
         reDraw();
     }
 
     /**
-     * Initial view to display on application startup as specified in SpringConfig.
-     * The view doubles as the default view, the "root" of all possible sub views so to speak
-     * @param view The view to display, autowired from bean in SpringConfig
+     * Initial scene to display on application startup as specified in SpringConfig.
+     * The scene doubles as the default scene, the "root" of all possible sub views so to speak
+     * @param scene The scene to display, autowired from bean in SpringConfig
      */
     @Autowired
-    public void setInitialView(View view) {
-        System.out.println("Autowiring view");
-        this.currentView = view;
-        this.defaultView = view;
+    public void setInitialView(Scene scene) {
+        System.out.println("Autowiring scene");
+        this.currentScene = scene;
+        this.defaultScene = scene;
     }
 }

@@ -3,7 +3,7 @@ package application.view.characterViews;
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
-import application.view.View;
+import application.view.Scene;
 import application.view.builders.LayoutBuilder;
 import application.view.options.Option;
 import application.view.options.OptionGrid;
@@ -15,15 +15,12 @@ import application.view.strategies.SimpleOptionMovementStrategy;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CharacterSelectionView implements View {
-    private final Controller controller;
-    private final ServiceContext serviceContext;
+public class CharacterSelectionScene implements Scene {
+    private ServiceContext serviceContext;
     private final OptionMovementStrategy optionMovementStrategy;
     private final OptionGrid optionGrid;
 
-    public CharacterSelectionView(Controller controller, ServiceContext serviceContext) {
-        this.controller = controller;
-        this.serviceContext = serviceContext;
+    public CharacterSelectionScene() {
         this.optionMovementStrategy = new SimpleOptionMovementStrategy();
 
         Map<Position, Option> optionMap = new HashMap<>() {{
@@ -42,10 +39,10 @@ public class CharacterSelectionView implements View {
      * Indicated that the user confirmed an option, usually by pressing enter
      */
     @Override
-    public View confirm() {
+    public Scene confirm() {
         return switch (optionGrid.getCurrentOption().getId()) {
-            case "0" -> new CreateCharacterView(controller, serviceContext);
-            case "1" -> new LoadCharacterView(controller, serviceContext);
+            case "0" -> new CreateCharacterScene();
+            case "1" -> new LoadCharacterScene();
             default -> null;
         };
     }
@@ -64,5 +61,10 @@ public class CharacterSelectionView implements View {
                 .addOptionRow(optionGrid.getOptionRow(0))
                 .addOptionRow(optionGrid.getOptionRow(1));
         System.out.println(builder.build());
+    }
+
+    @Override
+    public void setServiceContext(ServiceContext serviceContext) {
+        this.serviceContext = serviceContext;
     }
 }

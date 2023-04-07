@@ -3,23 +3,20 @@ package application.view;
 import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
-import application.view.GMViews.GMSelectionView;
+import application.view.GMViews.GMSelectionScene;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
-import application.view.characterViews.CharacterSelectionView;
+import application.view.characterViews.CharacterSelectionScene;
 import application.view.options.*;
 import application.view.strategies.MoveOverOptionMovementStrategy;
 import application.view.strategies.OptionMovementStrategy;
 
-public class MainMenuView implements View {
-    private final Controller controller;
-    private final ServiceContext serviceContext;
+public class MainMenuScene implements Scene {
+    private ServiceContext serviceContext;
     private final OptionMovementStrategy optionMovementStrategy;
     private final OptionGrid optionGrid;
 
-    public MainMenuView(Controller controller, ServiceContext serviceContext) {
-        this.controller = controller;
-        this.serviceContext = serviceContext;
+    public MainMenuScene() {
         this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
         OptionGridBuilder builder = new OptionGridBuilder();
         builder.addMutableOptionAtPos(0, 0,
@@ -38,12 +35,12 @@ public class MainMenuView implements View {
     }
 
     @Override
-    public View confirm() {
+    public Scene confirm() {
         // ID 0 = Player
         // ID 1 = GM
         return switch (optionGrid.getCurrentOption().getId()) {
-            case "0" -> new CharacterSelectionView(controller, serviceContext);
-            case "1" -> new GMSelectionView(controller, serviceContext);
+            case "0" -> new CharacterSelectionScene();
+            case "1" -> new GMSelectionScene();
             default -> null;
         };
     }
@@ -51,5 +48,10 @@ public class MainMenuView implements View {
     @Override
     public boolean inputKey(ListenerKey key) {
         return optionMovementStrategy.handleMove(optionGrid, key);
+    }
+
+    @Override
+    public void setServiceContext(ServiceContext serviceContext) {
+        this.serviceContext = serviceContext;
     }
 }
