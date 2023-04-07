@@ -111,8 +111,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public Scene defaultView(BuildProperties buildProperties, @Lazy Controller controller, @Lazy ServiceContext serviceContext) {
-        return new MainMenuScene(controller, serviceContext);
+    public Scene defaultView() {
+        return new MainMenuScene();
     }
 
     @Bean

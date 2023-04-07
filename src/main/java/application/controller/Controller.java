@@ -17,10 +17,6 @@ public class Controller {
         this.serviceContext = serviceContext;
     }
 
-    public ConsoleService getConsoleService() {
-        return consoleService;
-    }
-
     /**
      * Tells the controller to clear the console window and draw the current selected view
      */
@@ -74,8 +70,9 @@ public class Controller {
      */
     @Autowired
     public void setInitialView(Scene scene) {
-        System.out.println("Autowiring scene");
         this.currentScene = scene;
         this.defaultScene = scene;
+        scene.setController(this);
+        scene.setServiceContext(serviceContext);
     }
 }
