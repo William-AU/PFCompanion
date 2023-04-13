@@ -133,6 +133,32 @@ public class OptionGrid {
     }
 
     /**
+     * As {@link OptionGrid#tab()} except moves left instead of right
+     * @return The updated instance of the {@link OptionGrid}
+     */
+    public OptionGrid shiftTab() {
+        Position leftPos = currentPosition.moveLeft();
+        if (optionMap.containsKey(leftPos)) {
+            return moveLeft();
+        }
+        int rightMostCol = getRightMostPositionCol(currentPosition.getY());
+        Position rightMost = new Position(rightMostCol, currentPosition.getY());
+        if (currentPosition.equals(rightMost)) return this;
+        optionMap.get(currentPosition).toggleHighlight();
+        optionMap.get(rightMost).toggleHighlight();
+        currentPosition = rightMost;
+        return this;
+    }
+
+    private int getRightMostPositionCol(int row) {
+        return optionMap.keySet()
+                .stream()
+                .filter(key -> key.getY() == row)
+                .mapToInt(Position::getX)
+                .max().orElse(0);
+    }
+
+    /**
      * Moves the current selected grid option to the right, if no option exists this method does nothing
      * @return The instance of the {@link OptionGrid} with an updated position
      */

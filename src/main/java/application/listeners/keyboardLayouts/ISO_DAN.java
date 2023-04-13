@@ -140,6 +140,18 @@ public class ISO_DAN implements KeyboardLayout {
     }
 
     @Override
+    public ListenerKey getKeyWithModifier(int code, ListenerModifier modifier) {
+        // Super hacky solution because we only really care about SHIFT + TAB right now
+        if (modifier != ListenerModifier.SHIFT) {
+            return getKey(code);
+        }
+        if (code != 15) {
+            return getKey(code);
+        }
+        return ListenerKey.SHIFT_TAB;
+    }
+
+    @Override
     public ListenerModifier getModifier(int code) {
         return switch (code) {
             case 42 -> ListenerModifier.SHIFT;

@@ -35,7 +35,12 @@ public class KeyboardListener implements NativeKeyListener {
     public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
         //System.out.println(nativeEvent.getKeyCode());
         ListenerModifier modifier = getActiveModifier(nativeEvent.getKeyCode());
-        ListenerKey keyCode = keyboardLayout.getKey(nativeEvent.getKeyCode());
+        ListenerKey keyCode;
+        if (modifier == ListenerModifier.NONE) {
+            keyCode = keyboardLayout.getKey(nativeEvent.getKeyCode());
+        } else {
+            keyCode = keyboardLayout.getKeyWithModifier(nativeEvent.getKeyCode(), modifier);
+        }
         if (keyCode != ListenerKey.NONE) {
             controller.handleKeyEvent(keyCode);
             return;

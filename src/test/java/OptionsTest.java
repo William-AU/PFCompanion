@@ -87,6 +87,33 @@ public class OptionsTest {
     }
 
     @Test
+    public void shouldHandleTabWith3Elements() {
+        gridLeft.moveDown();
+        gridLeft.tab();
+        assertThat(gridLeft.getCurrentOption().getId(), is("4"));
+        gridLeft.tab();
+        assertThat(gridLeft.getCurrentOption().getId(), is("5"));
+        gridLeft.tab();
+        assertThat(gridLeft.getCurrentOption().getId(), is("3"));
+    }
+
+    @Test
+    public void shouldHandleShiftTab() {
+        gridLeft.moveDown();
+        Option currentOption = gridLeft.getCurrentOption();
+        assertThat(currentOption.isHighlighted(), is(true));
+        gridLeft.shiftTab();
+        assertThat(currentOption.isHighlighted(), is(false));
+        assertThat(gridLeft.getCurrentOption().getId(), is("5"));
+        assertThat(gridLeft.getCurrentOption().isHighlighted(), is(true));
+        gridLeft.shiftTab();
+        assertThat(gridLeft.getCurrentOption().getId(), is("4"));
+        gridLeft.shiftTab();
+        assertThat(gridLeft.getCurrentOption().getId(), is("3"));
+
+    }
+
+    @Test
     public void shouldHighlight() {
         Option currentOption = gridLeft.getCurrentOption();
         assertThat(currentOption.isHighlighted(), is(true));

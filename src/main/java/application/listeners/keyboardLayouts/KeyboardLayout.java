@@ -24,6 +24,14 @@ public interface KeyboardLayout {
     ListenerKey getKey(int code);
 
     /**
+     * As {@link KeyboardLayout#getKey(int)} except accepts a {@link ListenerModifier} as well, used for commands such as SHIFT + TAB
+     * @param code The {@link NativeKeyEvent#getKeyCode()}
+     * @param modifier The {@link ListenerModifier} pressed at the same time as the {@link NativeKeyEvent#getKeyCode()}
+     * @return The keyboard specific {@link ListenerKey}
+     */
+    ListenerKey getKeyWithModifier(int code, ListenerModifier modifier);
+
+    /**
      * Get the modifier (ALT, SHIFT, CTRL) from a specific {@link NativeKeyEvent#getKeyCode()}
      * @param code The {@link NativeKeyEvent#getKeyCode()}
      * @return The keyboard specific {@link ListenerModifier}
