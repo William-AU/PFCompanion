@@ -5,128 +5,54 @@ import application.storage.services.ServiceContext;
 import application.view.Scene;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
+import application.view.builders.SceneBuilders.GenericSelectionSceneBuilder;
 import application.view.options.OptionGrid;
 import application.view.options.SimpleOption;
 import application.view.strategies.MoveOverOptionMovementStrategy;
 import application.view.strategies.NullMovementStrategy;
 import application.view.strategies.OptionMovementStrategy;
+import application.view.strategies.SimpleOptionMovementStrategy;
 
 public class CreateCampaignScene implements Scene {
-    private ServiceContext serviceContext;
-    private OptionMovementStrategy optionMovementStrategy;
-    private final OptionGrid optionGrid;
-    private boolean isTyping;
-    private String currentInput;
+    private final Scene delegate;
+    private final GenericSelectionSceneBuilder.FutureCapableScene nextScene;
 
     public CreateCampaignScene() {
-        this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
-        this.optionGrid = createOptionGrid();
-        this.isTyping = false;
-        this.currentInput = "";
-    }
-
-    private OptionGrid createOptionGrid() {
-        OptionGridBuilder builder = new OptionGridBuilder();
-        builder.addOptionsToNewRow(
-                new SimpleOption("Back", "0")
-        );
-        builder.addMutableOptionToCurrentRow(
-                new SimpleOption("<Enter name>", "2"),
-                new SimpleOption("<Placeholder>", "3")
-        );
-        builder.addOptionsToCurrentRow(
-                new SimpleOption("Next", "2")
-        );
-        OptionGrid res = builder.build();
-        System.out.println("Created grid");
-        System.out.println(res.DEBUG());
-        res.moveRight();
-        return res;
+        this.nextScene = null;  // TODO: Add scene
+        GenericSelectionSceneBuilder builder = new GenericSelectionSceneBuilder(new GMSelectionScene());
+        builder.setInputButtonLabel("Enter Campaign Name")
+                .setDistanceBetweenOptions(6)
+                .setNextScene(this.nextScene);
+        this.delegate = builder.build();
     }
 
     @Override
     public void draw() {
-        // TODO: Consider code duplication with CreateCharacterScene#draw()
-        LayoutBuilder layoutBuilder = new LayoutBuilder(serviceContext);
-        layoutBuilder.setCenter(true)
-                .setDistanceBetweenOptions(6)
-                .addOptionRow(optionGrid.getOptionRow(0));
-        if (isTyping) {
-            layoutBuilder.addLine("[" + currentInput + "]");
-        } else {
-            layoutBuilder.addLine(currentInput);
-        }
-        System.out.println(layoutBuilder.build());
+        delegate.draw();
     }
 
     @Override
     public Scene confirm() {
-        switch (optionGrid.getCurrentOption().getId()) {
-            case "0" -> {
-                return new GMSelectionScene();
-            }
-            case "1" -> {
-                // TODO: Handle <next> button
-            }
-            case "2" -> {
-                toggleTyping();
-                return this;
-            }
-        };
-        return null;
-    }
-
-    private void toggleTyping() {
-        if (isTyping) {
-            isTyping = false;
-            optionMovementStrategy = new MoveOverOptionMovementStrategy();
-        } else {
-            isTyping = true;
-            optionMovementStrategy = new NullMovementStrategy();
-        }
+        return delegate.confirm();
     }
 
     @Override
     public boolean inputKey(ListenerKey key) {
-        switch (key) {
-            case BACKSPACE -> {
-                if (currentInput.isBlank()) return false;
-                currentInput = currentInput.substring(0, currentInput.length() - 1);
-                return true;
-            }
-            case ESCAPE -> {
-                if (isTyping) {
-                    toggleTyping();
-                    return true;
-                }
-                return false;
-            }
-            case TAB -> {
-                if (isTyping) {
-                    toggleTyping();
-                }
-                return optionMovementStrategy.handleMove(optionGrid, key);
-            }
-            default -> {
-                return optionMovementStrategy.handleMove(optionGrid, key);
-            }
-        }
+        return delegate.inputKey(key);
     }
 
     @Override
     public boolean inputChar(char ch) {
-        if (!isTyping) return false;
-        currentInput += ch;
-        return true;
+        return delegate.inputChar(ch);
     }
 
     @Override
     public boolean shouldAcceptLetters() {
-        return isTyping;
+        return delegate.shouldAcceptLetters();
     }
 
     @Override
     public void setServiceContext(ServiceContext serviceContext) {
-        this.serviceContext = serviceContext;
+        delegate.setServiceContext(serviceContext);
     }
 }
