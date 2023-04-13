@@ -22,7 +22,10 @@ public class CharacterSelectionScene implements Scene {
 
     public CharacterSelectionScene() {
         this.optionMovementStrategy = new SimpleOptionMovementStrategy();
-
+        /*
+        OPTION1
+        OPTION2
+         */
         Map<Position, Option> optionMap = new HashMap<>() {{
             put(new Position(0, 0), new SimpleOption("Create Character", "0"));
             put(new Position(0, 1), new SimpleOption("Load Character", "1"));

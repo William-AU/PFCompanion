@@ -23,6 +23,11 @@ public class LayoutBuilder {
         this.terminalService = serviceContext.getTerminalService();
     }
 
+    public LayoutBuilder setDistanceBetweenRows(int distance) {
+        layoutContext.distanceBetweenRows = distance;
+        return this;
+    }
+
     public LayoutBuilder setDistanceBetweenOptions(int distance) {
         layoutContext.distanceBetweenOptions = distance;
         return this;
@@ -49,10 +54,14 @@ public class LayoutBuilder {
 
     /**
      * Adds a line to the builder from a list of options. Each option is formatted by the {@link LayoutContext} and {@link application.config.ColorConfig.ColorContext}
+     * If {@link LayoutContext#distanceBetweenRows} is greater than 0, it will append these extra rows before printing the options
      * @param row The row of {@link SimpleOption} to be formatted
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addOptionRow(List<Option> row) {
+        for (int i = 0; i < layoutContext.distanceBetweenRows; i++) {
+            System.out.println();
+        }
         StringBuilder tempStringBuilder = new StringBuilder();
         String prefix = "";
         for (Option option : row) {
@@ -98,11 +107,12 @@ public class LayoutBuilder {
     }
 
     private static class LayoutContext {
-        private int distanceBetweenOptions;
+        private int distanceBetweenOptions, distanceBetweenRows;
         private boolean center;
 
         public LayoutContext() {
             distanceBetweenOptions = 1;
+            distanceBetweenRows = 0;
             center = false;
         }
 

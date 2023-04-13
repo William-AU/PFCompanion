@@ -1,9 +1,8 @@
 package application.view;
 
-import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
-import application.view.GMViews.GMSelectionScene;
+import application.view.GMScenes.GMSelectionScene;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
 import application.view.characterViews.CharacterSelectionScene;

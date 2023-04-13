@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class OptionGridBuilderTest {
-    private OptionGrid expectedGrid;
+    private OptionGrid expectedGrid, expectedGrid2;
 
     @BeforeEach
     private void init() {
@@ -27,6 +27,15 @@ public class OptionGridBuilderTest {
            put(new Position(1, 1), new SimpleOption("OPTION3", "3"));
         }};
         expectedGrid = new OptionGrid(manualOptions);
+
+        /* Expect grid 2
+        OPTION1 OPTION2
+         */
+        Map<Position, Option> manualOptions2 = new HashMap<>() {{
+            put(new Position(0, 0), new SimpleOption("OPTION1", "1"));
+            put(new Position(1, 0), new SimpleOption("OPTION2", "2"));
+        }};
+        expectedGrid2 = new OptionGrid(manualOptions2);
     }
 
     @Test
@@ -45,8 +54,6 @@ public class OptionGridBuilderTest {
         builder.addOptionsToNewRow(new SimpleOption("OPTION1", "1"))
                 .addOptionsToNewRow(new SimpleOption("OPTION2", "2"), new SimpleOption("OPTION3", "3"));
         OptionGrid actualGrid = builder.build();
-        Option demonOption1 = actualGrid.DEBUG().get(new Position(1, 1));
-        Option demonOption2 = expectedGrid.DEBUG().get(new Position(1, 1));
         assertThat(actualGrid, is(expectedGrid));
     }
 
@@ -57,8 +64,16 @@ public class OptionGridBuilderTest {
                 .addOptionsToNewRow(new SimpleOption("OPTION2", "2"))
                 .addOptionsToCurrentRow(new SimpleOption("OPTION3", "3"));
         OptionGrid actualGrid = builder.build();
-        assertThat(actualGrid.DEBUG().keySet(), is(expectedGrid.DEBUG().keySet()));
         assertThat(actualGrid, is(expectedGrid));
+    }
+
+    @Test
+    public void shouldHandleNewIntoCurrent() {
+        OptionGridBuilder builder = new OptionGridBuilder();
+        builder.addOptionsToNewRow(new SimpleOption("OPTION1", "1"))
+                .addOptionsToCurrentRow(new SimpleOption("OPTION2", "2"));
+        OptionGrid actualGrid = builder.build();
+        assertThat(actualGrid, is(expectedGrid2));
     }
 
 }

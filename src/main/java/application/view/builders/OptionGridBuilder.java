@@ -59,6 +59,26 @@ public class OptionGridBuilder {
     }
 
     /**
+     * As {@link OptionGridBuilder#addOptionsToNewRow(Option...)} except only appends a single {@link MutableOption}
+     * @param options The {@link SimpleOption} objects to build the {@link MutableOption} from
+     * @return The updated instance of the {@link OptionGridBuilder}
+     */
+    public OptionGridBuilder addMutableOptionToNewRow(SimpleOption... options) {
+        MutableOption option = new MutableOption(List.of(options));
+        return addOptionsToNewRow(option);
+    }
+
+    /**
+     * As {@link OptionGridBuilder#addOptionsToCurrentRow(Option...)} except only appends a single {@link MutableOption}
+     * @param options The {@link SimpleOption} objects to build the {@link MutableOption} from
+     * @return The updated instance of the {@link OptionGridBuilder}
+     */
+    public OptionGridBuilder addMutableOptionToCurrentRow(SimpleOption... options) {
+        MutableOption option = new MutableOption(List.of(options));
+        return addOptionsToCurrentRow(option);
+    }
+
+    /**
      * Adds a collection of {@link Option} objects to the next free row in the internal pseudo {@link OptionGrid}. If no options have been added, this will add a new row at index 0
      * @param options The collection of {@link Option} objects to add
      * @return The updated instance of the {@link OptionGridBuilder}
@@ -83,7 +103,7 @@ public class OptionGridBuilder {
         int currentLargestRow = getLargestRow();
         int currentLargestCol = getLargestColAtRow(currentLargestRow);
         for (int i = 0; i < options.length; i++) {
-            optionMap.put(new Position(currentLargestRow, currentLargestCol + i + 1), options[i]);
+            optionMap.put(new Position(currentLargestCol + i + 1, currentLargestRow), options[i]);
         }
         return this;
     }
