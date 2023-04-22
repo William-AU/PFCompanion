@@ -18,7 +18,7 @@ public class CampaignService {
 
     public List<String> getCampaignNames() {
         return new ArrayList<>() {{
-            repository.getALL().forEach(campaign -> add(campaign.getName()));
+            repository.findAll().forEach(campaign -> add(campaign.getName()));
         }};
     }
 
@@ -37,9 +37,11 @@ public class CampaignService {
      * @param name The name of the new {@link Campaign}
      * @throws IllegalStateException if the save fails because a {@link Campaign} with the given name already exists in the database
      */
-    public void createAndSaveCampaign(String name) throws IllegalStateException {
+    public Campaign createAndSaveCampaign(String name) throws IllegalStateException {
         if (repository.existsCampaignEntityByName(name)) throw new IllegalStateException("A campaign by the name " + name + " already exists in the database");
         Campaign campaign = new Campaign(name);
-
+        CampaignEntity entity = new CampaignEntity(campaign);
+        repository.save(entity);
+        return campaign;
     }
 }

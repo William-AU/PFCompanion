@@ -8,5 +8,4 @@ import java.util.List;
 public interface CampaignRepository extends JpaRepository<CampaignEntity, Integer> {
     CampaignEntity getCampaignEntityByName(String name);
     boolean existsCampaignEntityByName(String name);
-    List<CampaignEntity> getALL();
 }

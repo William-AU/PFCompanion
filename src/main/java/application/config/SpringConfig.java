@@ -27,10 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 @SpringBootConfiguration
 public class SpringConfig {
@@ -138,8 +135,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public Controller controller(SceneServiceContext serviceContext, @Lazy ControllerServiceContext controllerServiceContext) {
-        return new Controller(serviceContext, controllerServiceContext);
+    public Controller controller(SceneServiceContext serviceContext, @Lazy ControllerServiceContext controllerServiceContext, @Lazy Terminal terminal) {
+        return new Controller(serviceContext, controllerServiceContext, terminal);
     }
 
     @Bean

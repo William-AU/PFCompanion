@@ -8,15 +8,22 @@ import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
 import application.view.options.OptionGrid;
 import application.view.options.SimpleOption;
+import application.view.strategies.OptionMovementStrategy;
+import application.view.strategies.SimpleOptionMovementStrategy;
 
 import java.util.List;
 
-public class SelectCampaignScene implements Scene {
+public class LoadCampaignScene implements Scene {
     private OptionGrid optionGrid;
     private Controller controller;
     private SceneServiceContext sceneServiceContext;
+    private final OptionMovementStrategy optionMovementStrategy;
 
-    public SelectCampaignScene() {
+    public LoadCampaignScene() {
+        this.optionMovementStrategy = new SimpleOptionMovementStrategy();
+    }
+
+    private void lateInit() {
         this.optionGrid = createOptionGrid();
     }
 
@@ -24,18 +31,9 @@ public class SelectCampaignScene implements Scene {
         OptionGridBuilder builder = new OptionGridBuilder();
         List<String> campaignNames = controller.getCampaignNames();
         SimpleOption backOption = new SimpleOption("Back", "0");
-        SimpleOption nextOption = new SimpleOption("Next", "1");
-        if (campaignNames.isEmpty()) {
-            builder.addOptionsToCurrentRow(backOption, nextOption);
-            return builder.build();
-        }
+        builder.addOptionsToNewRow(backOption);
         for (int i = 0; i < campaignNames.size(); i++) {
-            SimpleOption nameOption = new SimpleOption(campaignNames.get(i), "" + (i + 2));
-            if (i == 0) {
-                builder.addOptionsToCurrentRow(backOption, nameOption, nextOption);
-            } else {
-                builder.addOptionsToNewRow(nameOption);
-            }
+            builder.addOptionsToNewRow(new SimpleOption(campaignNames.get(i), "" + (i + 1)));
         }
         return builder.build();
     }
@@ -45,7 +43,8 @@ public class SelectCampaignScene implements Scene {
         LayoutBuilder layoutBuilder = new LayoutBuilder(sceneServiceContext);
         layoutBuilder.setCenter(true)
                 .setDistanceBetweenOptions(6);
-
+        optionGrid.getAllOptionRows().forEach(layoutBuilder::addOptionRow);
+        System.out.println(layoutBuilder.build());
     }
 
     @Override
@@ -56,15 +55,24 @@ public class SelectCampaignScene implements Scene {
     @Override
     public void setController(Controller controller) {
         this.controller = controller;
+        lateInit();
     }
 
     @Override
     public Scene confirm() {
-        return null;
+        if (optionGrid.getCurrentOption().getId().equals("0")) {
+            return new GMSelectionScene();
+        }
+
+        List<String> campaignNames = controller.getCampaignNames();
+        int index = Integer.parseInt(optionGrid.getCurrentOption().getId());
+        String name = campaignNames.get(index - 1);
+        controller.setCampaign(name);
+        return new GMMenuScene();
     }
 
     @Override
     public boolean inputKey(ListenerKey key) {
-        return false;
+        return optionMovementStrategy.handleMove(optionGrid, key);
     }
 }

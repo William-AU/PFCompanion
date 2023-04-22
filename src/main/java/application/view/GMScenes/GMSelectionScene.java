@@ -47,7 +47,7 @@ public class GMSelectionScene implements Scene {
     public Scene confirm() {
         return switch (optionGrid.getCurrentOption().getId()) {
             case "0" -> new CreateCampaignScene();
-            case "1" -> new SelectCampaignScene();
+            case "1" -> new LoadCampaignScene();
             default -> null;
         };
     }

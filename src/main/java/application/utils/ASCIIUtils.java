@@ -57,6 +57,11 @@ public class ASCIIUtils {
         }
     }
 
+    public static String getString(String text, ASCIIArtSize size, ASCIIArtFont font, String symbol) {
+        ASCIIUtils gen = new ASCIIUtils();
+        return gen.getStringTextArt(text, size.value, font, symbol);
+    }
+
     public static void print(String text, ASCIIArtSize size, ASCIIArtFont font, String symbol) {
         ASCIIUtils gen = new ASCIIUtils();
         try {
@@ -95,6 +100,30 @@ public class ASCIIUtils {
                 continue;
             System.out.println(sb);
         }
+    }
+
+    private String getStringTextArt(String artText, int textHeight, ASCIIArtFont fontType, String artSymbol) {
+        String fontName = fontType.getValue();
+        int imageWidth = findImageWidth(textHeight, artText, fontName);
+
+        BufferedImage image = new BufferedImage(imageWidth, textHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics g = image.getGraphics();
+        Font font = new Font(fontName, Font.BOLD, textHeight);
+        g.setFont(font);
+
+        Graphics2D graphics = (Graphics2D) g;
+        graphics.drawString(artText, 0, getBaselinePosition(g, font));
+        StringBuilder builder = new StringBuilder();
+
+        for (int y = 0; y < textHeight; y++) {
+            StringBuilder sb = new StringBuilder();
+            for (int x = 0; x < imageWidth; x++)
+                sb.append(image.getRGB(x, y) == Color.WHITE.getRGB() ? artSymbol : " ");
+            if (sb.toString().trim().isEmpty())
+                continue;
+            builder.append(sb).append("\n");
+        }
+        return builder.toString();
     }
 
     /**

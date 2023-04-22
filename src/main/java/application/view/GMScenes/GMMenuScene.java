@@ -11,12 +11,12 @@ public class GMMenuScene implements Scene {
 
    private void initAfterController(Campaign initialCampaign) {
        campaignName = initialCampaign.getName();
-
    }
 
     @Override
     public void draw() {
-
+        System.out.println("CAMPAIGN SCENE");
+        System.out.println(controller.getCurrentCampaign().getName());
     }
 
     @Override

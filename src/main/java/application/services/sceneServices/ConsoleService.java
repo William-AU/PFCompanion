@@ -35,6 +35,12 @@ public class ConsoleService {
         }
     }
 
+    public String getTitleString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(ASCIIUtils.getString("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█")).append("\n\n");
+        return sb.toString();
+    }
+
     public void drawTitle() {
         ASCIIUtils.print("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
         System.out.println(buildProperties.getVersion());

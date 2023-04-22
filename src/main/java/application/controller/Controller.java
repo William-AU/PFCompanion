@@ -7,8 +7,11 @@ import application.services.controllerServices.ControllerServiceContext;
 import application.services.sceneServices.ConsoleService;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
+import org.jline.terminal.Terminal;
+import org.jline.utils.AttributedStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 public class Controller {
@@ -18,11 +21,15 @@ public class Controller {
     private final SceneServiceContext sceneServiceContext;
     private final ControllerContext controllerContext;
     private final ControllerServiceContext controllerServiceContext;
+    private final PrintWriter writer;
+    private final Terminal terminal;
 
-    public Controller(SceneServiceContext sceneServiceContext, ControllerServiceContext controllerServiceContext) {
+    public Controller(SceneServiceContext sceneServiceContext, ControllerServiceContext controllerServiceContext, Terminal terminal) {
         this.consoleService = sceneServiceContext.getConsoleService();
         this.sceneServiceContext = sceneServiceContext;
         this.controllerServiceContext = controllerServiceContext;
+        this.terminal = terminal;
+        this.writer = new PrintWriter(terminal.writer());
         this.controllerContext = new ControllerContext();
     }
 
@@ -30,11 +37,26 @@ public class Controller {
      * Tells the controller to clear the console window and draw the current selected view
      */
     public void reDraw() {
+        if (currentScene.useFastDraw()) {
+            fastDraw();
+            return;
+        }
         consoleService.clearConsole();
         if (currentScene.shouldDrawTitle()) {
             consoleService.drawTitle();
         }
         currentScene.draw();
+    }
+
+    private void fastDraw() {
+        StringBuilder toDraw = new StringBuilder();
+        if (currentScene.shouldDrawTitle()) {
+            toDraw.append(consoleService.getTitleString());
+        }
+        toDraw.append(currentScene.fastDraw());
+        consoleService.clearConsole();
+        String finalString = new AttributedStringBuilder().ansiAppend(toDraw.toString()).toAnsi();
+        System.out.println(finalString);
     }
 
     /**
@@ -84,7 +106,8 @@ public class Controller {
     public void createNewCampaign() throws IllegalStateException {
         if (controllerContext.lastStringInput.equals("")) throw new IllegalStateException("No campaign name was given by the Scene, cannot create a new campaign");
         String name = controllerContext.lastStringInput;
-        controllerServiceContext.getCampaignService().createAndSaveCampaign(name);
+        Campaign newCampaign = controllerServiceContext.getCampaignService().createAndSaveCampaign(name);
+        controllerContext.activeCampaign = newCampaign;
     }
 
     public boolean hasActiveCampaign() {
