@@ -1,5 +1,8 @@
 package application.services.sceneServices;
 
+import lombok.Data;
+import lombok.Getter;
+@Getter
 public class SceneServiceContext {
     private final ColorService colorService;
     private final ConsoleService consoleService;
@@ -9,15 +12,6 @@ public class SceneServiceContext {
         this.colorService = colorService;
         this.consoleService = consoleService;
         this.terminalService = terminalService;
-    }
-
-    public ConsoleService getConsoleService() {
-        return consoleService;
-    }
-
-
-    public ColorService getColorService() {
-        return colorService;
     }
 
 }

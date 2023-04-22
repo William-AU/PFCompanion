@@ -3,6 +3,7 @@ package application.controller;
 import application.listeners.ListenerKey;
 import application.model.GM.Campaign;
 import application.model.character.Character;
+import application.services.controllerServices.ControllerServiceContext;
 import application.services.sceneServices.ConsoleService;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
@@ -12,12 +13,14 @@ public class Controller {
     private Scene currentScene;
     private Scene defaultScene;
     private final ConsoleService consoleService;
-    private final SceneServiceContext serviceContext;
+    private final SceneServiceContext sceneServiceContext;
     private final ControllerContext controllerContext;
+    private final ControllerServiceContext controllerServiceContext;
 
-    public Controller(SceneServiceContext serviceContext) {
-        this.consoleService = serviceContext.getConsoleService();
-        this.serviceContext = serviceContext;
+    public Controller(SceneServiceContext sceneServiceContext, ControllerServiceContext controllerServiceContext) {
+        this.consoleService = sceneServiceContext.getConsoleService();
+        this.sceneServiceContext = sceneServiceContext;
+        this.controllerServiceContext = controllerServiceContext;
         this.controllerContext = new ControllerContext();
     }
 
@@ -39,7 +42,7 @@ public class Controller {
     public void setViewAndDraw(Scene scene) {
         currentScene = scene;
         currentScene.setController(this);
-        currentScene.setServiceContext(serviceContext);
+        currentScene.setServiceContext(sceneServiceContext);
         reDraw();
     }
 
@@ -71,13 +74,15 @@ public class Controller {
         this.controllerContext.lastStringInput = str;
     }
 
-    public void setCampaign() {
-
+    public void setCampaign(String name) {
+        Campaign campaign = controllerServiceContext.getCampaignService().getCampaignByName(name);
+        controllerContext.activeCampaign = campaign;
     }
 
     public void createNewCampaign() throws IllegalStateException {
         if (controllerContext.lastStringInput.equals("")) throw new IllegalStateException("No campaign name was given by the Scene, cannot create a new campaign");
-
+        String name = controllerContext.lastStringInput;
+        controllerServiceContext.getCampaignService().createAndSaveCampaign(name);
     }
 
     public boolean hasActiveCampaign() {
@@ -98,7 +103,7 @@ public class Controller {
         this.currentScene = scene;
         this.defaultScene = scene;
         scene.setController(this);
-        scene.setServiceContext(serviceContext);
+        scene.setServiceContext(sceneServiceContext);
     }
 
     private class ControllerContext{

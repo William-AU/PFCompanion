@@ -138,8 +138,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public Controller controller(SceneServiceContext serviceContext) {
-        return new Controller(serviceContext);
+    public Controller controller(SceneServiceContext serviceContext, @Lazy ControllerServiceContext controllerServiceContext) {
+        return new Controller(serviceContext, controllerServiceContext);
     }
 
     @Bean

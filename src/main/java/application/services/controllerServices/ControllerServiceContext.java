@@ -1,5 +1,9 @@
 package application.services.controllerServices;
 
+import lombok.Data;
+import lombok.Getter;
+
+@Getter
 public class ControllerServiceContext {
     private final CampaignService campaignService;
     private final CharacterService characterService;
