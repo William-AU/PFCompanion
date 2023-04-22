@@ -52,8 +52,11 @@ dependencies {
     //annotationProcessor 'org.projectlombok:lombok'
 
     // We instead use cutting edge Lombok release
-    compileOnly 'org.projectlombok:lombok:edge-SNAPSHOT'
-    annotationProcessor 'org.projectlombok:lombok:edge-SNAPSHOT'
+    //compileOnly 'org.projectlombok:lombok:edge-SNAPSHOT'
+    //annotationProcessor 'org.projectlombok:lombok:edge-SNAPSHOT'
+
+    // Apparently the Edge release page is regularly unresponsive, so we use a JAR of the edge release instead
+    implementation files('libs/lombog-edge.jar')
 
     // Hamcrest
     testImplementation 'org.hamcrest:hamcrest:2.2'

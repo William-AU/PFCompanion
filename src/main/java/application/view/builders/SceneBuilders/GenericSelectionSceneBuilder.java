@@ -13,13 +13,12 @@ import application.view.strategies.OptionMovementStrategy;
 
 /**
  * Creates a generic scene with a back button, an input prompt, and a next button
- * After the input is confirmed, the builder will return a new view, this view must implement {@link FutureCapableScene} to receive the prompt input.
  * This builder requires a previous {@link Scene} object which the back button points to
  */
 public class GenericSelectionSceneBuilder {
     private FutureCapableScene nextScene;
     private final Scene previousScene;
-    private String inputButtonlabel;
+    private String inputButtonLabel;
     private int distanceBetweenOptions;
 
     public GenericSelectionSceneBuilder(Scene previousScene) {
@@ -33,7 +32,7 @@ public class GenericSelectionSceneBuilder {
     }
 
     public GenericSelectionSceneBuilder setInputButtonLabel(String label) {
-        this.inputButtonlabel = label;
+        this.inputButtonLabel = label;
         return this;
     }
 
@@ -44,7 +43,7 @@ public class GenericSelectionSceneBuilder {
 
 
     public Scene build() {
-        return new GenericScene(inputButtonlabel,
+        return new GenericScene(inputButtonLabel,
                 distanceBetweenOptions,
                 previousScene,
                 nextScene);

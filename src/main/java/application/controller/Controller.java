@@ -11,10 +11,12 @@ public class Controller {
     private Scene defaultScene;
     private final ConsoleService consoleService;
     private final ServiceContext serviceContext;
+    private final ControllerContext controllerContext;
 
     public Controller(ServiceContext serviceContext) {
         this.consoleService = serviceContext.getConsoleService();
         this.serviceContext = serviceContext;
+        this.controllerContext = new ControllerContext();
     }
 
     /**
@@ -63,6 +65,10 @@ public class Controller {
         reDraw();
     }
 
+    public void setStringInput(String str) {
+        this.controllerContext.lastStringInput = str;
+    }
+
     /**
      * Initial scene to display on application startup as specified in SpringConfig.
      * The scene doubles as the default scene, the "root" of all possible sub views so to speak
@@ -75,4 +81,11 @@ public class Controller {
         scene.setController(this);
         scene.setServiceContext(serviceContext);
     }
+
+    private class ControllerContext{
+        private String lastStringInput;
+        protected ControllerContext() {
+            this.lastStringInput = "";
+        }
+    };
 }
