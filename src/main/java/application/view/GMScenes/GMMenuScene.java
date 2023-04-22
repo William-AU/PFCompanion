@@ -1,12 +1,32 @@
 package application.view.GMScenes;
 
+import application.controller.Controller;
 import application.listeners.ListenerKey;
+import application.model.GM.Campaign;
 import application.view.Scene;
 
 public class GMMenuScene implements Scene {
+   private Controller controller;
+   private String campaignName;
+
+   private void initAfterController(Campaign initialCampaign) {
+       campaignName = initialCampaign.getName();
+
+   }
+
     @Override
     public void draw() {
 
+    }
+
+    @Override
+    public void setController(Controller controller) {
+        this.controller = controller;
+        boolean noActiveCampaign = !controller.hasActiveCampaign();
+        if (noActiveCampaign) {
+            controller.createNewCampaign();
+        }
+        initAfterController(controller.getCurrentCampaign());
     }
 
     /**

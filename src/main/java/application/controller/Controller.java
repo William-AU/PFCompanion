@@ -9,6 +9,8 @@ import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class Controller {
     private Scene currentScene;
     private Scene defaultScene;
@@ -91,6 +93,14 @@ public class Controller {
 
     public boolean hasActiveCharacter() {
         return controllerContext.activeCharacter != null;
+    }
+
+    public Campaign getCurrentCampaign() {
+        return controllerContext.activeCampaign;
+    }
+
+    public List<String> getCampaignNames() {
+        return controllerServiceContext.getCampaignService().getCampaignNames();
     }
 
     /**

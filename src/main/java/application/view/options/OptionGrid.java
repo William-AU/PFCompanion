@@ -91,6 +91,16 @@ public class OptionGrid {
         return result;
     }
 
+    public List<List<Option>> getAllOptionRows() {
+        List<List<Position>> positionRows = getAllRows();
+        List<List<Option>> res = new ArrayList<>();
+        positionRows.forEach(row -> {
+            int rowIndex = row.get(0).getY();
+            res.add(getOptionRow(rowIndex));
+        });
+        return res;
+    }
+
     private Option getNextOptionOnRow(Position currentPos, int row) {
         Position newPosition = currentPos.moveRight();
         if (!optionMap.containsKey(newPosition)) return null;
@@ -219,6 +229,7 @@ public class OptionGrid {
         currentPosition = newPos;
         return this;
     }
+
 
     public Map<Position, Option> DEBUG() {
         return optionMap;

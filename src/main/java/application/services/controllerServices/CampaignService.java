@@ -5,12 +5,21 @@ import application.storage.entities.CampaignEntity;
 import application.storage.repositories.CampaignRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CampaignService {
     private final CampaignRepository repository;
 
     public CampaignService(CampaignRepository campaignRepository) {
         this.repository = campaignRepository;
+    }
+
+    public List<String> getCampaignNames() {
+        return new ArrayList<>() {{
+            repository.getALL().forEach(campaign -> add(campaign.getName()));
+        }};
     }
 
     /**
