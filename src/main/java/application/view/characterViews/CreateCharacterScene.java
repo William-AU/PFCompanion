@@ -1,7 +1,7 @@
 package application.view.characterViews;
 
 import application.listeners.ListenerKey;
-import application.storage.services.ServiceContext;
+import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
 import application.view.builders.SceneBuilders.GenericSelectionSceneBuilder;
 
@@ -59,7 +59,7 @@ public class CreateCharacterScene implements Scene {
     }
 
     @Override
-    public void setServiceContext(ServiceContext serviceContext) {
+    public void setServiceContext(SceneServiceContext serviceContext) {
         delegate.setServiceContext(serviceContext);
     }
 }

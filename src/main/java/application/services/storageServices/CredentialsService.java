@@ -1,4 +1,4 @@
-package application.storage.services;
+package application.services.storageServices;
 
 import application.model.exceptions.InvalidPasswordException;
 import application.model.exceptions.UsernameDoesNotExistException;
@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import javax.swing.text.html.parser.Entity;
 
 /**
  * Service for handling the storage and retrieval of database credentials.
@@ -128,7 +127,7 @@ public class CredentialsService {
     }
 
     /**
-     * Internal method for hashing passwords, note that hashing uses BCrypt and salt is generated within the encryption function itself and appended to the hash, thus this should only be called once on registration, otherwise use {@link application.storage.services.CredentialsService#validatePassword(String, String)}
+     * Internal method for hashing passwords, note that hashing uses BCrypt and salt is generated within the encryption function itself and appended to the hash, thus this should only be called once on registration, otherwise use {@link CredentialsService#validatePassword(String, String)}
      * @param password The password to be hashed
      * @return The hash for the given password using {@link org.springframework.security.crypto.bcrypt}
      */

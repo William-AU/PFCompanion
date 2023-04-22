@@ -1,4 +1,4 @@
-package application.services;
+package application.services.sceneServices;
 
 import application.config.ColorConfig;
 import com.diogonunes.jcolor.Ansi;

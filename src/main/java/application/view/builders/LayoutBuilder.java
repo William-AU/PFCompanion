@@ -1,9 +1,9 @@
 package application.view.builders;
 
 import application.common.Constants;
-import application.services.ColorService;
-import application.storage.services.ServiceContext;
-import application.storage.services.TerminalService;
+import application.services.sceneServices.ColorService;
+import application.services.sceneServices.SceneServiceContext;
+import application.services.sceneServices.TerminalService;
 import application.view.options.Option;
 import application.view.options.SimpleOption;
 
@@ -16,7 +16,7 @@ public class LayoutBuilder {
     private final ColorService colorService;
     private final TerminalService terminalService;
 
-    public LayoutBuilder(ServiceContext serviceContext) {
+    public LayoutBuilder(SceneServiceContext serviceContext) {
         this.layoutContext = new LayoutContext();
         this.stringBuilder = new StringBuilder();
         this.colorService = serviceContext.getColorService();

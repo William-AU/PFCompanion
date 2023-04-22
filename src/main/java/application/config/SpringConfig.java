@@ -3,12 +3,15 @@ package application.config;
 import application.controller.Controller;
 import application.listeners.keyboardLayouts.ISO_DAN;
 import application.listeners.keyboardLayouts.KeyboardLayout;
-import application.services.ColorService;
-import application.services.ConsoleService;
-import application.storage.services.CharacterService;
-import application.storage.services.CredentialsService;
-import application.storage.services.ServiceContext;
-import application.storage.services.TerminalService;
+import application.services.controllerServices.CampaignService;
+import application.services.controllerServices.CharacterService;
+import application.services.controllerServices.ControllerServiceContext;
+import application.services.sceneServices.ColorService;
+import application.services.sceneServices.ConsoleService;
+import application.services.storageServices.CredentialsService;
+import application.services.sceneServices.SceneServiceContext;
+import application.services.sceneServices.TerminalService;
+import application.services.storageServices.StorageServiceContext;
 import application.view.MainMenuScene;
 import application.view.Scene;
 import org.jline.reader.LineReader;
@@ -17,7 +20,6 @@ import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -136,15 +138,24 @@ public class SpringConfig {
     }
 
     @Bean
-    public Controller controller(ServiceContext serviceContext) {
+    public Controller controller(SceneServiceContext serviceContext) {
         return new Controller(serviceContext);
     }
 
     @Bean
-    public ServiceContext serviceContext(@Lazy CharacterService characterService, @Lazy CredentialsService credentialsService,
-                                         @Lazy ColorService colorService, @Lazy TerminalService terminalService,
-                                         @Lazy ConsoleService consoleService) {
-        return new ServiceContext(characterService, credentialsService, colorService, terminalService, consoleService);
+    public StorageServiceContext storageServiceContext(@Lazy CredentialsService credentialsService) {
+        return new StorageServiceContext(credentialsService);
+    }
+
+    @Bean
+    public ControllerServiceContext controllerServiceContext(@Lazy CharacterService characterService, @Lazy CampaignService campaignService) {
+        return new ControllerServiceContext(campaignService, characterService);
+    };
+
+    @Bean
+    public SceneServiceContext serviceContext(@Lazy ColorService colorService, @Lazy TerminalService terminalService,
+                                              @Lazy ConsoleService consoleService) {
+        return new SceneServiceContext(colorService, consoleService, terminalService);
     }
 
     @Bean

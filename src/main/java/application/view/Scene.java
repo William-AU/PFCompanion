@@ -2,7 +2,7 @@ package application.view;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
-import application.storage.services.ServiceContext;
+import application.services.sceneServices.SceneServiceContext;
 
 public interface Scene {
     void draw();
@@ -49,7 +49,7 @@ public interface Scene {
 
     };
 
-    default void setServiceContext(ServiceContext serviceContext) {
+    default void setServiceContext(SceneServiceContext serviceContext) {
 
     }
 

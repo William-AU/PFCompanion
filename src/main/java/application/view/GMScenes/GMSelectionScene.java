@@ -1,7 +1,7 @@
 package application.view.GMScenes;
 
 import application.listeners.ListenerKey;
-import application.storage.services.ServiceContext;
+import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
@@ -13,7 +13,7 @@ import application.view.strategies.OptionMovementStrategy;
 public class GMSelectionScene implements Scene {
     private final OptionGrid optionGrid;
     private final OptionMovementStrategy optionMovementStrategy;
-    private ServiceContext serviceContext;
+    private SceneServiceContext serviceContext;
 
     public GMSelectionScene() {
         /*
@@ -58,7 +58,7 @@ public class GMSelectionScene implements Scene {
     }
 
     @Override
-    public void setServiceContext(ServiceContext serviceContext) {
+    public void setServiceContext(SceneServiceContext serviceContext) {
         this.serviceContext = serviceContext;
     }
 }

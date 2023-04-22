@@ -2,7 +2,7 @@ package application.view.builders.SceneBuilders;
 
 import application.controller.Controller;
 import application.listeners.ListenerKey;
-import application.storage.services.ServiceContext;
+import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
 import application.view.builders.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
@@ -51,7 +51,7 @@ public class GenericSelectionSceneBuilder {
     }
 
     private class GenericScene implements Scene {
-        private ServiceContext serviceContext;
+        private SceneServiceContext serviceContext;
         private OptionMovementStrategy optionMovementStrategy;
         private final OptionGrid optionGrid;
         private String currentInput;
@@ -174,7 +174,7 @@ public class GenericSelectionSceneBuilder {
         }
 
         @Override
-        public void setServiceContext(ServiceContext serviceContext) {
+        public void setServiceContext(SceneServiceContext serviceContext) {
             this.serviceContext = serviceContext;
         }
     }

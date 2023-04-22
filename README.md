@@ -150,7 +150,7 @@ public void draw() {
 ```
 
 ### The Service Context ###
-Some scene features might require access to services as found in `application.services`. This currently includes methods to render text based on the users color choice, as well as information about the terminal, importantly, these things are used by some Builders. All of these services are found in the `application.storage.services.ServiceContext` class.
+Some scene features might require access to services as found in `application.services`. This currently includes methods to render text based on the users color choice, as well as information about the terminal, importantly, these things are used by some Builders. All of these services are found in the `application.services.sceneServices.SceneServiceContext` class.
 
 If you need access to these classes, implement either of the following `Scene` methods:
 ```java

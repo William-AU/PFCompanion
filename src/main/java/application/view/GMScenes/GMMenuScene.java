@@ -1,20 +1,18 @@
-package application.view.characterViews;
+package application.view.GMScenes;
 
 import application.listeners.ListenerKey;
 import application.view.Scene;
 
-public class LoadCharacterScene implements Scene {
-
-    public LoadCharacterScene() {
-    }
-
+public class GMMenuScene implements Scene {
     @Override
     public void draw() {
 
     }
 
     /**
-     * Indicated that the user confirmed an option, usually by pressing enter
+     * Indicates that the user confirmed an option, usually by pressing enter
+     *
+     * @return Returns a new {@link Scene} if the action requires a scene change, otherwise returns null
      */
     @Override
     public Scene confirm() {
