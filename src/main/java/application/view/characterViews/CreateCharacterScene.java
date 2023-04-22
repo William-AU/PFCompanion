@@ -1,5 +1,6 @@
 package application.view.characterViews;
 
+import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
@@ -45,6 +46,27 @@ public class CreateCharacterScene implements Scene {
     @Override
     public boolean shouldAcceptLetters() {
         return delegate.shouldAcceptLetters();
+    }
+
+    /**
+     * Tells the {@link Controller} if this {@link Scene} is using fast draw. Fast draw delegates the responsibility of drawing to the {@link Controller}, this allows for slightly more optimised CLS timing.
+     *
+     * @return True if the scene uses fast draw, false otherwise
+     */
+    @Override
+    public boolean useFastDraw() {
+        return delegate.useFastDraw();
+    }
+
+    /**
+     * Only called if this {@link Scene} returns true on {@link Scene#useFastDraw()}. Instead of using print statements, instead returns a formatted {@link String} to be printed.
+     * {@link Scene#fastDraw()} is called immediately after the console is cleared by the controller
+     *
+     * @return The string to be drawn
+     */
+    @Override
+    public String fastDraw() {
+        return delegate.fastDraw();
     }
 
     /**

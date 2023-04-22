@@ -2,6 +2,7 @@ package application.services.sceneServices;
 
 import application.common.Constants;
 import application.utils.ASCIIUtils;
+import org.jline.terminal.Terminal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import java.io.IOException;
 @Service
 public class ConsoleService {
     private  BuildProperties buildProperties;
+    private Terminal terminal;
 
     @Autowired
-    public void setBuildProperties(BuildProperties buildProperties) {
+    public void setBuildProperties(BuildProperties buildProperties, Terminal terminal) {
         this.buildProperties = buildProperties;
+        this.terminal = terminal;
     }
 
     public void clearConsole() {
@@ -35,9 +38,15 @@ public class ConsoleService {
         }
     }
 
+    public String clearConsoleString(String input) {
+        int height = terminal.getHeight();
+        int lines = input.split("\n").length;
+        return "\n".repeat(height - lines - 3);
+    }
+
     public String getTitleString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(ASCIIUtils.getString("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█")).append("\n\n");
+        sb.append(ASCIIUtils.getString("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█")).append(buildProperties.getVersion()).append("\n\n\n");
         return sb.toString();
     }
 

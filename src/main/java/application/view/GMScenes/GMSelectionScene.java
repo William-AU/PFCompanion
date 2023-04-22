@@ -1,5 +1,6 @@
 package application.view.GMScenes;
 
+import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
@@ -34,13 +35,34 @@ public class GMSelectionScene implements Scene {
 
     @Override
     public void draw() {
+        System.out.println(fastDraw());
+    }
+
+    /**
+     * Tells the {@link application.controller.Controller} if this {@link Scene} is using fast draw. Fast draw delegates the responsibility of drawing to the {@link Controller}, this allows for slightly more optimised CLS timing.
+     *
+     * @return True if the scene uses fast draw, false otherwise
+     */
+    @Override
+    public boolean useFastDraw() {
+        return true;
+    }
+
+    /**
+     * Only called if this {@link Scene} returns true on {@link Scene#useFastDraw()}. Instead of using print statements, instead returns a formatted {@link String} to be printed.
+     * {@link Scene#fastDraw()} is called immediately after the console is cleared by the controller
+     *
+     * @return The string to be drawn
+     */
+    @Override
+    public String fastDraw() {
         LayoutBuilder builder = new LayoutBuilder(serviceContext);
         builder.setDistanceBetweenOptions(10)
                 .setCenter(true)
                 .addLine("Please select an option")
                 .addOptionRow(optionGrid.getOptionRow(0))
                 .addOptionRow(optionGrid.getOptionRow(1));
-        System.out.println(builder.build());
+        return builder.build();
     }
 
     @Override

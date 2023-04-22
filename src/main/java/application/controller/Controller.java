@@ -54,7 +54,8 @@ public class Controller {
             toDraw.append(consoleService.getTitleString());
         }
         toDraw.append(currentScene.fastDraw());
-        consoleService.clearConsole();
+        //consoleService.clearConsole();
+        toDraw.append(consoleService.clearConsoleString(toDraw.toString()));
         String finalString = new AttributedStringBuilder().ansiAppend(toDraw.toString()).toAnsi();
         System.out.println(finalString);
     }

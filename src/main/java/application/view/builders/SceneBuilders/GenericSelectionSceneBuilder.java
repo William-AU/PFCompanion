@@ -70,7 +70,7 @@ public class GenericSelectionSceneBuilder {
             this.optionGrid = createOptionGrid();
             this.optionMovementStrategy = new MoveOverOptionMovementStrategy();
             this.currentInput = "";
-            this.isTyping = false;
+            this.isTyping = true;
         }
 
         private OptionGrid createOptionGrid() {
@@ -87,7 +87,16 @@ public class GenericSelectionSceneBuilder {
 
         @Override
         public void draw() {
-
+            LayoutBuilder layoutBuilder = new LayoutBuilder(serviceContext);
+            layoutBuilder.setCenter(true)
+                    .setDistanceBetweenOptions(distanceBetweenOptions)
+                    .addOptionRow(optionGrid.getOptionRow(0));
+            if (isTyping) {
+                layoutBuilder.addLine("[" + currentInput + "]");
+            } else {
+                layoutBuilder.addLine(currentInput);
+            }
+            System.out.println(layoutBuilder.build());
         }
 
         @Override
@@ -119,16 +128,6 @@ public class GenericSelectionSceneBuilder {
         }
 
         /**
-         * Tells the {@link Controller} if this {@link Scene} is using fast draw. Fast draw delegates the responsibility of drawing to the {@link Controller}, this allows for slightly more optimised CLS timing.
-         *
-         * @return True if the scene uses fast draw, false otherwise
-         */
-        @Override
-        public boolean useFastDraw() {
-            return true;
-        }
-
-        /**
          * Only called if this {@link Scene} returns true on {@link Scene#useFastDraw()}. Instead of using print statements, instead returns a formatted {@link String} to be printed.
          * {@link Scene#fastDraw()} is called immediately after the console is cleared by the controller
          *
@@ -146,6 +145,16 @@ public class GenericSelectionSceneBuilder {
                 layoutBuilder.addLine(currentInput);
             }
             return layoutBuilder.build();
+        }
+
+        /**
+         * Tells the {@link Controller} if this {@link Scene} is using fast draw. Fast draw delegates the responsibility of drawing to the {@link Controller}, this allows for slightly more optimised CLS timing.
+         *
+         * @return True if the scene uses fast draw, false otherwise
+         */
+        @Override
+        public boolean useFastDraw() {
+            return true;
         }
 
         @Override

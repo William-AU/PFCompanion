@@ -69,6 +69,8 @@ default boolean shouldDrawTitle() {
     return true;
 ```
 
+This draw method uses the OS System equivalent of a `cls`. However, on Windows specifically this implementation is rather slow, therefore, the `Scene` interface can use a faster rendering implementation that mimics what is used on UNIX systems. For a `Scene` to support this, simply make `Scene#fastDraw()` return true, and implement `Scene#fastDraw()` instead of `Scene#draw()`.
+
 Each scene implements a `confirm()` method, which is called whenever the user presses enter, it is the responsibility of the Scene to validate this input, and can then change the shown Scene by returning another one, or null to maintain the current scene.
 The following is an example implementation of a `confrim()` method:
 ```java
