@@ -1,5 +1,6 @@
 package application.view.builders.SceneBuilders;
 
+import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.storage.services.ServiceContext;
 import application.view.Scene;
@@ -16,7 +17,7 @@ import application.view.strategies.OptionMovementStrategy;
  * This builder requires a previous {@link Scene} object which the back button points to
  */
 public class GenericSelectionSceneBuilder {
-    private FutureCapableScene nextScene;
+    private Scene nextScene;
     private final Scene previousScene;
     private String inputButtonLabel;
     private int distanceBetweenOptions;
@@ -26,7 +27,7 @@ public class GenericSelectionSceneBuilder {
         this.distanceBetweenOptions = 6;
     }
 
-    public GenericSelectionSceneBuilder setNextScene(FutureCapableScene scene) {
+    public GenericSelectionSceneBuilder setNextScene(Scene scene) {
         this.nextScene = scene;
         return this;
     }
@@ -49,12 +50,6 @@ public class GenericSelectionSceneBuilder {
                 nextScene);
     }
 
-    /**
-     *
-     */
-    public interface FutureCapableScene extends Scene {
-        void setFutureString(String string);
-    }
     private class GenericScene implements Scene {
         private ServiceContext serviceContext;
         private OptionMovementStrategy optionMovementStrategy;
@@ -64,10 +59,10 @@ public class GenericSelectionSceneBuilder {
         // SET FROM BUILDER
         private final String inputButtonLabel;
         private final int distanceBetweenOptions;
-        private final Scene previousScene;
-        private final GenericSelectionSceneBuilder.FutureCapableScene nextScene;
+        private final Scene previousScene, nextScene;
+        private Controller controller;
 
-        public GenericScene(String inputButtonLabel, int distanceBetweenOptions, Scene previousScene, GenericSelectionSceneBuilder.FutureCapableScene nextScene) {
+        public GenericScene(String inputButtonLabel, int distanceBetweenOptions, Scene previousScene, Scene nextScene) {
             this.inputButtonLabel = inputButtonLabel;
             this.distanceBetweenOptions = distanceBetweenOptions;
             this.previousScene = previousScene;
@@ -111,7 +106,7 @@ public class GenericSelectionSceneBuilder {
                     return previousScene;
                 }
                 case "1" -> {
-                    nextScene.setFutureString(currentInput);
+                    controller.setStringInput(currentInput);
                     return nextScene;
                 }
                 case "2" -> {
@@ -165,6 +160,12 @@ public class GenericSelectionSceneBuilder {
             if (!isTyping) return false;
             currentInput += ch;
             return true;
+        }
+
+        @Override
+        public void setController(Controller controller) {
+            this.controller = controller;
+            controller.setStringInput("");
         }
 
         @Override

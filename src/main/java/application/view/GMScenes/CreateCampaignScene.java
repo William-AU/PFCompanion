@@ -14,8 +14,7 @@ import application.view.strategies.OptionMovementStrategy;
 import application.view.strategies.SimpleOptionMovementStrategy;
 
 public class CreateCampaignScene implements Scene {
-    private final Scene delegate;
-    private final GenericSelectionSceneBuilder.FutureCapableScene nextScene;
+    private final Scene delegate, nextScene;
 
     public CreateCampaignScene() {
         this.nextScene = null;  // TODO: Add scene
