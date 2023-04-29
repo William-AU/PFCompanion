@@ -1,16 +1,19 @@
 package application.storage.entities;
 
 import application.model.GM.Campaign;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 @Data
 public class CampaignEntity {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
 
     private String name;
 
@@ -20,10 +23,10 @@ public class CampaignEntity {
     public CampaignEntity() {}
 
     /**
-     * When creating a {@link CampaignEntity} we often already have a {@link Campaign} object, which has all of the data we need. However, this constructor should handle formatting that data in a way that facilitates database storage
-     * @param campaign The {@link Campaign} object to clone and save
+     * Sets entity data from a given {@link Campaign}, works as a manual constructor except also handles correctly incrementing ID
+     * @param campaign The {@link Campaign} to get data from
      */
-    public CampaignEntity(Campaign campaign) {
+    public void setCampaign(Campaign campaign) {
         this.name = campaign.getName();
     }
 }

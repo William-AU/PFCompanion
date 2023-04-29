@@ -2,10 +2,12 @@ package application.storage.entities;
 
 import application.model.character.Attribute;
 import application.model.character.Character;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import java.util.Map;
 @Data
 public class CharacterEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int STR, DEX, CON, INT, WIS, CHA;
 

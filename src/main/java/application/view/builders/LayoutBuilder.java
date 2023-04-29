@@ -44,6 +44,7 @@ public class LayoutBuilder {
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addLine(String line) {
+        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
         if (layoutContext.center) {
             stringBuilder.append(center(line)).append("\n");
             return this;
@@ -59,9 +60,9 @@ public class LayoutBuilder {
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addOptionRow(List<Option> row) {
-        for (int i = 0; i < layoutContext.distanceBetweenRows; i++) {
-            System.out.println();
-        }
+        // Append the distance between rows, default 0.
+        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
+
         StringBuilder tempStringBuilder = new StringBuilder();
         String prefix = "";
         for (Option option : row) {
@@ -104,6 +105,11 @@ public class LayoutBuilder {
 
     public String build() {
         return stringBuilder.toString();
+    }
+
+    @Override
+    public String toString() {
+        return build();
     }
 
     private static class LayoutContext {

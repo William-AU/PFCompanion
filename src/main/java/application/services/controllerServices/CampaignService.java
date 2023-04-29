@@ -29,6 +29,7 @@ public class CampaignService {
      */
     public Campaign getCampaignByName(String name) {
         CampaignEntity entity = repository.getCampaignEntityByName(name);
+        System.out.println("Found campaign with ID: " + entity.getId() + " name: " + entity.getName());
         return new Campaign(entity);
     }
 
@@ -40,7 +41,9 @@ public class CampaignService {
     public Campaign createAndSaveCampaign(String name) throws IllegalStateException {
         if (repository.existsCampaignEntityByName(name)) throw new IllegalStateException("A campaign by the name " + name + " already exists in the database");
         Campaign campaign = new Campaign(name);
-        CampaignEntity entity = new CampaignEntity(campaign);
+        CampaignEntity entity = new CampaignEntity();
+        entity.setCampaign(campaign);
+        System.out.println("Created campaign entity with ID: " + entity.getId() + " name: " + entity.getName());
         repository.save(entity);
         return campaign;
     }
