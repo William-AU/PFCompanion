@@ -54,12 +54,31 @@ public class LayoutBuilder {
     }
 
     /**
+     * Adds a line, functions as {@link #addLine(String)} )} except formats using a given {@link String} format. Ignores distance set by {@link LayoutContext}
+     * @param lines The lines to add
+     * @param format The format to use
+     * @return The updated instance of the {@link LayoutBuilder}
+     */
+    public LayoutBuilder addLine(List<String> lines, String format) {
+        String content = String.format(format, lines.toArray());
+        if (layoutContext.center) {
+            stringBuilder.append(center(content)).append("\n");
+            return this;
+        }
+        stringBuilder.append(content).append("\n");
+        return this;
+    }
+
+    /**
      * Adds a line to the builder from a list of options. Each option is formatted by the {@link LayoutContext} and {@link application.config.ColorConfig.ColorContext}
      * If {@link LayoutContext#distanceBetweenRows} is greater than 0, it will append these extra rows before printing the options
-     * @param row The row of {@link SimpleOption} to be formatted
+     * @param row The row of {@link Option} to be formatted
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addOptionRow(List<Option> row) {
+        if (!layoutContext.format.isBlank()) {
+            return addOptionRow(row, layoutContext.format);
+        }
         // Append the distance between rows, default 0.
         stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
 
@@ -75,6 +94,30 @@ public class LayoutBuilder {
             stringBuilder.append(center(tempStringBuilder.toString()));
         } else {
             stringBuilder.append(tempStringBuilder);
+        }
+        stringBuilder.append("\n");
+        return this;
+    }
+
+    /**
+     * Adds a line to the builder fro a list of options using a given formatting {@link String}. Otherwise functions as {@link #addOptionRow(List)}, however, distance between options as defined in {@link LayoutContext} is ignored.
+     * @param row The row of {@link Option} to be formatted
+     * @param format The format to use
+     * @return The updated instance of the {@link LayoutBuilder}
+     */
+    public LayoutBuilder addOptionRow(List<Option> row, String format) {
+        // Append the distance between rows, default 0.
+        if (format.isBlank()) {
+            return addOptionRow(row);
+        }
+
+        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
+
+        String content = String.format(format, row.toArray()) + "\n";
+        if (layoutContext.center) {
+            stringBuilder.append(center(content.toString()));
+        } else {
+            stringBuilder.append(content);
         }
         stringBuilder.append("\n");
         return this;
@@ -101,7 +144,10 @@ public class LayoutBuilder {
         return addOptionRow(new ArrayList<>() {{add(opt);}});
     }
 
-
+    public LayoutBuilder setFormat(String format) {
+        this.layoutContext.format = format;
+        return this;
+    }
 
     public String build() {
         return stringBuilder.toString();
@@ -115,11 +161,13 @@ public class LayoutBuilder {
     private static class LayoutContext {
         private int distanceBetweenOptions, distanceBetweenRows;
         private boolean center;
+        private String format;
 
         public LayoutContext() {
             distanceBetweenOptions = 1;
             distanceBetweenRows = 0;
             center = false;
+            format = "";
         }
 
         public LayoutContext(int distanceBetweenOptions) {

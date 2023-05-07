@@ -4,14 +4,13 @@ import application.listeners.ListenerKey;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.FastDrawScene;
 import application.view.Scene;
+import application.view.builders.LayoutBuilder;
 
-public class GMCombatScene implements FastDrawScene {
-    private final Scene initiativeScene;
+import java.util.ArrayList;
+import java.util.List;
 
-    public GMCombatScene() {
-        this.initiativeScene = new GMInitiativeScene();
-    }
-
+public class GMInitiativeScene implements FastDrawScene {
+    private SceneServiceContext sceneServiceContext;
     /**
      * Indicates that the user confirmed an option, usually by pressing enter
      *
@@ -19,7 +18,7 @@ public class GMCombatScene implements FastDrawScene {
      */
     @Override
     public Scene confirm() {
-        return initiativeScene.confirm();
+        return null;
     }
 
     /**
@@ -30,12 +29,12 @@ public class GMCombatScene implements FastDrawScene {
      */
     @Override
     public boolean inputKey(ListenerKey key) {
-        return initiativeScene.inputKey(key);
+        return false;
     }
 
     @Override
     public void setServiceContext(SceneServiceContext serviceContext) {
-        initiativeScene.setServiceContext(serviceContext);
+        this.sceneServiceContext = serviceContext;
     }
 
     /**
@@ -46,6 +45,16 @@ public class GMCombatScene implements FastDrawScene {
      */
     @Override
     public String fastDraw() {
-        return initiativeScene.fastDraw();
+        String format = "%-10s %-15s %-8s";
+        LayoutBuilder layoutBuilder = new LayoutBuilder(sceneServiceContext);
+        List<String> title = new ArrayList<>() {{
+            add("Name");
+            add("Init. Roll");
+            add("???");
+        }};
+        layoutBuilder.setCenter(true)
+                .addLine("Initiative")
+                .addLine(title, format);
+        return layoutBuilder.build();
     }
 }
