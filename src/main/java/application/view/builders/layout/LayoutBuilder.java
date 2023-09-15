@@ -1,11 +1,10 @@
-package application.view.builders;
+package application.view.builders.layout;
 
 import application.common.Constants;
 import application.services.sceneServices.ColorService;
 import application.services.sceneServices.SceneServiceContext;
 import application.services.sceneServices.TerminalService;
 import application.view.options.Option;
-import application.view.options.SimpleOption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +20,21 @@ public class LayoutBuilder {
         this.stringBuilder = new StringBuilder();
         this.colorService = serviceContext.getColorService();
         this.terminalService = serviceContext.getTerminalService();
+        this.layoutContext = new LayoutContext();
     }
 
     public LayoutBuilder setDistanceBetweenRows(int distance) {
-        layoutContext.distanceBetweenRows = distance;
+        layoutContext.setDistanceBetweenRows(distance);
         return this;
     }
 
     public LayoutBuilder setDistanceBetweenOptions(int distance) {
-        layoutContext.distanceBetweenOptions = distance;
+        layoutContext.setDistanceBetweenOptions(distance);
         return this;
     }
 
     public LayoutBuilder setCenter(boolean value) {
-        layoutContext.center = value;
+        layoutContext.setCenter(value);
         return this;
     }
 
@@ -44,8 +44,8 @@ public class LayoutBuilder {
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addLine(String line) {
-        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
-        if (layoutContext.center) {
+        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.getDistanceBetweenRows())));
+        if (layoutContext.isCenter()) {
             stringBuilder.append(center(line)).append("\n");
             return this;
         }
@@ -61,7 +61,7 @@ public class LayoutBuilder {
      */
     public LayoutBuilder addLine(List<String> lines, String format) {
         String content = String.format(format, lines.toArray());
-        if (layoutContext.center) {
+        if (layoutContext.isCenter()) {
             stringBuilder.append(center(content)).append("\n");
             return this;
         }
@@ -71,16 +71,16 @@ public class LayoutBuilder {
 
     /**
      * Adds a line to the builder from a list of options. Each option is formatted by the {@link LayoutContext} and {@link application.config.ColorConfig.ColorContext}
-     * If {@link LayoutContext#distanceBetweenRows} is greater than 0, it will append these extra rows before printing the options
+     * If {@link LayoutContext#getDistanceBetweenRows()} is greater than 0, it will append these extra rows before printing the options
      * @param row The row of {@link Option} to be formatted
      * @return The updated instance of the {@link LayoutBuilder}
      */
     public LayoutBuilder addOptionRow(List<Option> row) {
-        if (!layoutContext.format.isBlank()) {
-            return addOptionRow(row, layoutContext.format);
+        if (!layoutContext.getFormat().isBlank()) {
+            return addOptionRow(row, layoutContext.getFormat());
         }
         // Append the distance between rows, default 0.
-        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
+        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.getDistanceBetweenRows())));
 
         StringBuilder tempStringBuilder = new StringBuilder();
         String prefix = "";
@@ -88,9 +88,9 @@ public class LayoutBuilder {
             tempStringBuilder.append(prefix);
             String optionStr = colorService.formatOptionString(option.getLabel(), option.isHighlighted());
             tempStringBuilder.append(optionStr);
-            prefix = " ".repeat(layoutContext.distanceBetweenOptions);
+            prefix = " ".repeat(layoutContext.getDistanceBetweenOptions());
         }
-        if (layoutContext.center) {
+        if (layoutContext.isCenter()) {
             stringBuilder.append(center(tempStringBuilder.toString()));
         } else {
             stringBuilder.append(tempStringBuilder);
@@ -111,10 +111,10 @@ public class LayoutBuilder {
             return addOptionRow(row);
         }
 
-        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.distanceBetweenRows)));
+        stringBuilder.append("\n".repeat(Math.max(0, layoutContext.getDistanceBetweenRows())));
 
         String content = String.format(format, row.toArray()) + "\n";
-        if (layoutContext.center) {
+        if (layoutContext.isCenter()) {
             stringBuilder.append(center(content.toString()));
         } else {
             stringBuilder.append(content);
@@ -145,7 +145,7 @@ public class LayoutBuilder {
     }
 
     public LayoutBuilder setFormat(String format) {
-        this.layoutContext.format = format;
+        this.layoutContext.setFormat(format);
         return this;
     }
 
@@ -156,23 +156,5 @@ public class LayoutBuilder {
     @Override
     public String toString() {
         return build();
-    }
-
-    private static class LayoutContext {
-        private int distanceBetweenOptions, distanceBetweenRows;
-        private boolean center;
-        private String format;
-
-        public LayoutContext() {
-            distanceBetweenOptions = 1;
-            distanceBetweenRows = 0;
-            center = false;
-            format = "";
-        }
-
-        public LayoutContext(int distanceBetweenOptions) {
-            this.distanceBetweenOptions = distanceBetweenOptions;
-            center = false;
-        }
     }
 }

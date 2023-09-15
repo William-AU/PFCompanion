@@ -4,7 +4,7 @@ import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.Scene;
-import application.view.builders.LayoutBuilder;
+import application.view.builders.layout.LayoutBuilder;
 import application.view.options.Option;
 import application.view.options.OptionGrid;
 import application.view.options.Position;

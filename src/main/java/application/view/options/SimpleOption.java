@@ -1,9 +1,7 @@
 package application.view.options;
 
-import application.model.datastructures.CircularDoublyLinkedList;
+import application.view.builders.layout.LayoutBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class SimpleOption implements Option {
@@ -12,7 +10,7 @@ public class SimpleOption implements Option {
     private boolean highlighted;
 
     /**
-     * Creates an {@link SimpleOption} instance which represents a menu option and can be printed using {@link application.view.builders.LayoutBuilder}.
+     * Creates an {@link SimpleOption} instance which represents a menu option and can be printed using {@link LayoutBuilder}.
      * @param label The label to be shown in the GUI
      * @param id The ID that represents this option
      */

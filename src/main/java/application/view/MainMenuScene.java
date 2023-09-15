@@ -4,7 +4,7 @@ import application.controller.Controller;
 import application.listeners.ListenerKey;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.GMScenes.GMSelectionScene;
-import application.view.builders.LayoutBuilder;
+import application.view.builders.layout.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
 import application.view.characterViews.CharacterSelectionScene;
 import application.view.options.*;

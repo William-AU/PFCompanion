@@ -6,7 +6,7 @@ import application.model.GM.Campaign;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.FastDrawScene;
 import application.view.Scene;
-import application.view.builders.LayoutBuilder;
+import application.view.builders.layout.LayoutBuilder;
 import application.view.builders.OptionGridBuilder;
 import application.view.options.OptionGrid;
 import application.view.options.SimpleOption;

@@ -4,7 +4,7 @@ import application.listeners.ListenerKey;
 import application.services.sceneServices.SceneServiceContext;
 import application.view.FastDrawScene;
 import application.view.Scene;
-import application.view.builders.LayoutBuilder;
+import application.view.builders.layout.LayoutBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
