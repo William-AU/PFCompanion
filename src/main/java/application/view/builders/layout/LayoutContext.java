@@ -3,13 +3,18 @@ package application.view.builders.layout;
 public class LayoutContext {
     private int distanceBetweenOptions, distanceBetweenRows;
     private boolean center;
-    private String format;
+    private String format, commandText;
 
     public LayoutContext() {
         distanceBetweenOptions = 1;
         distanceBetweenRows = 0;
         center = false;
         format = "";
+        commandText = "";
+    }
+
+    public String getCommandText() {
+        return commandText;
     }
 
     public int getDistanceBetweenOptions() {
@@ -30,6 +35,10 @@ public class LayoutContext {
 
     public boolean isCenter() {
         return center;
+    }
+
+    public void setCommandText(String commandText) {
+        this.commandText = commandText;
     }
 
     public void setCenter(boolean center) {

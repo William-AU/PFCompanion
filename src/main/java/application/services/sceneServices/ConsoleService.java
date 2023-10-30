@@ -1,6 +1,6 @@
 package application.services.sceneServices;
 
-import application.common.Constants;
+import application.common.ArtConstants;
 import application.utils.ASCIIUtils;
 import org.jline.terminal.Terminal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +41,22 @@ public class ConsoleService {
     public String clearConsoleString(String input) {
         int height = terminal.getHeight();
         int lines = input.split("\n").length;
-        return "\n".repeat(height - lines - 3);
+        // 3 is the number of blank spaces between the logo and the start of the window
+        int toRepeat = height - lines - 3;
+        if (toRepeat > 0) {
+            return "\n".repeat(height - lines - 3);
+        }
+        return "";
     }
 
     public String getTitleString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(ASCIIUtils.getString("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█")).append(buildProperties.getVersion()).append("\n\n\n");
+        sb.append(ASCIIUtils.getString("Companion", ArtConstants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█")).append(buildProperties.getVersion()).append("\n\n\n");
         return sb.toString();
     }
 
     public void drawTitle() {
-        ASCIIUtils.print("Companion", Constants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
+        ASCIIUtils.print("Companion", ArtConstants.ART_SIZE, ASCIIUtils.ASCIIArtFont.ART_FONT_DIALOG_INPUT, "█");
         System.out.println(buildProperties.getVersion());
         System.out.println();
         System.out.println();

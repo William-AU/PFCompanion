@@ -1,6 +1,6 @@
 package application.view.builders.layout;
 
-import application.common.Constants;
+import application.common.ArtConstants;
 import application.services.sceneServices.ColorService;
 import application.services.sceneServices.SceneServiceContext;
 import application.services.sceneServices.TerminalService;
@@ -53,6 +53,22 @@ public class LayoutBuilder {
         return this;
     }
 
+    private int getTerminalCols() {
+        // We do not allow views wider than fits with the art, TODO: should be a setting somewhere
+        int maxSize = ArtConstants.getColumns();
+        int actualSize = terminalService.getSize().getRows();
+        return Math.min(maxSize, actualSize);
+    }
+
+    private int getTerminalRows() {
+        int artOffset = ArtConstants.getArtHeight();
+        // Where is any of this coming from? NOBODY KNOWS
+        // Does it work without it? ABSOLUTELY NOT
+        // Is it operating system dependent? PROBABLY
+        int extraOffset = 3 + 6;
+       return terminalService.getSize().getRows() - artOffset - extraOffset;
+    }
+
     /**
      * Adds a line, functions as {@link #addLine(String)} )} except formats using a given {@link String} format. Ignores distance set by {@link LayoutContext}
      * @param lines The lines to add
@@ -99,6 +115,11 @@ public class LayoutBuilder {
         return this;
     }
 
+    public LayoutBuilder setCommandText(String commandText) {
+        layoutContext.setCommandText(commandText);
+        return this;
+    }
+
     /**
      * Adds a line to the builder fro a list of options using a given formatting {@link String}. Otherwise functions as {@link #addOptionRow(List)}, however, distance between options as defined in {@link LayoutContext} is ignored.
      * @param row The row of {@link Option} to be formatted
@@ -125,7 +146,7 @@ public class LayoutBuilder {
 
     private String center(String toCenter) {
         //int columns = terminalService.getSize().getColumns();
-        int columns = Constants.getColumns();
+        int columns = getTerminalCols();
         int columnsUsed = countStringColumns(toCenter);
         int columnsWhitespace = columns - columnsUsed;
         int leftPadding = columnsWhitespace / 2;
@@ -135,9 +156,19 @@ public class LayoutBuilder {
     /**
      * Simple method for stripping away ANSI encoding from a string, also uses {@link String#strip()} for good measure
      */
-    private int countStringColumns(String str) {
+    private String stripANSIString(String str) {
         String strippedString = str.replaceAll("\u001B\\[[\\d;]*[^\\d;]","");
-        return strippedString.strip().length();
+        return strippedString.strip();
+    }
+
+    private int countStringColumns(String str) {
+        return stripANSIString(str).length();
+    }
+
+    private int countStringRows(String str) {
+        String stripped = stripANSIString(str);
+        int newLines = stripped.length() - stripped.replace("\n", "").length();
+        return newLines; // We *should* always append \n even to single line builders
     }
 
     public LayoutBuilder addOption(Option opt) {
@@ -149,8 +180,21 @@ public class LayoutBuilder {
         return this;
     }
 
+    private void appendCommand(StringBuilder sb, String commandText, int builderRows) {
+        int rows = getTerminalRows();
+        int toAppend = rows - builderRows - 1; // -1 because we always append \n to lines
+        sb.append("\n".repeat(toAppend));
+        sb.append(commandText);
+    }
+
     public String build() {
-        return stringBuilder.toString();
+        StringBuilder resBuilder = new StringBuilder();
+        resBuilder.append(stringBuilder);
+        int builderRows = countStringRows(resBuilder.toString());
+        if ((builderRows < getTerminalRows()) && (!layoutContext.getCommandText().equals(""))) {
+            appendCommand(resBuilder, layoutContext.getCommandText(), builderRows);
+        }
+        return resBuilder.toString();
     }
 
     @Override
